@@ -11,7 +11,7 @@ async def broadcast(message):
     if len(clients)>1:
         game = du.DurakGame(len(clients))
         game_state = game.play_game()
-        massmessage = json.dumps(game_state.__dict__)
+        massmessage = json.dumps(game_state.__dict__, ensure_ascii=False)
         await asyncio.wait([client.send(massmessage) for client in clients])
  
 
@@ -24,7 +24,7 @@ async def handle_client(websocket, path):
         clients.remove(websocket)
 
 async def start_server():
-    async with websockets.serve(handle_client, "localhost", 8765):
+    async with websockets.serve(handle_client, "0.0.0.0", 8765):
         await asyncio.Future()  # Run forever
 
 asyncio.run(start_server())
