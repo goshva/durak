@@ -1,4 +1,4 @@
-in windows working in wsl ( Power Shell in ADMIN: wsl --install)
+in windows working in wsl ( in PowerShell in ADMIN: wsl --install)
 ```
 python3 -m venv env 
 source env/bin/activate
