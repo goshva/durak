@@ -14,3 +14,7 @@ if OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 876
 ```
 sudo kill -9 `sudo lsof -t -i:8765`
 ```
+
+for RUN APP:
+Open mminimum 2 Browser windows with index.html and run in both connect and send buttons
+(file://wsl.localhost/Ubuntu/home/goshva/python/durak/index.html)
