@@ -1,112 +1,209 @@
 <!DOCTYPE html>
+<html>
+  <meta charset="utf-8" />
+  <head>
+    <title>WebSocket Test</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<meta charset="utf-8" />
+  <script language="javascript" type="text/javascript">
+    function init() {
+      document.myform.url.value = "ws://localhost:8765/";
+      //document.myform.url.value = "wss://158.160.61.155:8765/"
+      //document.myform.url.value = "ws://158.160.61.155:8765/"
 
-<title>WebSocket Test</title>
+      document.myform.inputtext.value = "Hello World!";
+      document.myform.disconnectButton.disabled = true;
+    }
 
-<script language="javascript" type="text/javascript">
+    function doConnect() {
+      websocket = new WebSocket(document.myform.url.value);
+      websocket.onopen = function (evt) {
+        onOpen(evt);
+      };
+      websocket.onclose = function (evt) {
+        onClose(evt);
+      };
+      websocket.onmessage = function (evt) {
+        onMessage(evt);
+      };
+      websocket.onerror = function (evt) {
+        onError(evt);
+      };
+    }
 
+    function onOpen(evt) {
+      writeToScreen("connected\n");
+      document.myform.connectButton.disabled = true;
+      document.myform.disconnectButton.disabled = false;
+    }
 
-  function init()
-  {
-	//document.myform.url.value = "ws://localhost:8765/"
-  	//document.myform.url.value = "wss://158.160.61.155:8765/"
-  	document.myform.url.value = "ws://158.160.61.155:8765/"
+    function onClose(evt) {
+      writeToScreen("disconnected\n");
+      document.myform.connectButton.disabled = false;
+      document.myform.disconnectButton.disabled = true;
+    }
 
-	document.myform.inputtext.value = "Hello World!"
-	document.myform.disconnectButton.disabled = true;
-  }
+    function onMessage(evt) {
+      writeToScreen("response: " + evt.data + "\n");
+      console.log(evt.data);
+    }
 
-  function doConnect()
-  {
-    websocket = new WebSocket(document.myform.url.value);
-    websocket.onopen = function(evt) { onOpen(evt) };
-    websocket.onclose = function(evt) { onClose(evt) };
-    websocket.onmessage = function(evt) { onMessage(evt) };
-    websocket.onerror = function(evt) { onError(evt) };
-  }
+    function onError(evt) {
+      writeToScreen("error: " + evt.data + "\n");
 
-  function onOpen(evt)
-  {
-    writeToScreen("connected\n");
-	document.myform.connectButton.disabled = true;
-	document.myform.disconnectButton.disabled = false;
-  }
+      websocket.close();
 
-  function onClose(evt)
-  {
-    writeToScreen("disconnected\n");
-	document.myform.connectButton.disabled = false;
-	document.myform.disconnectButton.disabled = true;
-  }
+      document.myform.connectButton.disabled = false;
+      document.myform.disconnectButton.disabled = true;
+    }
 
-  function onMessage(evt)
-  {
-    writeToScreen("response: " + evt.data + '\n');
-    console.log(evt.data)
-  }
+    function doSend(message) {
+      writeToScreen("sent: " + message + "\n");
+      websocket.send(message);
+    }
 
-  function onError(evt)
-  {
-    writeToScreen('error: ' + evt.data + '\n');
+    function writeToScreen(message) {
+      document.myform.outputtext.value += message;
+      document.myform.outputtext.scrollTop =
+        document.myform.outputtext.scrollHeight;
+    }
 
-	websocket.close();
+    window.addEventListener("load", init, false);
 
-	document.myform.connectButton.disabled = false;
-	document.myform.disconnectButton.disabled = true;
+    function sendText() {
+      doSend(document.myform.inputtext.value);
+    }
 
-  }
+    function clearText() {
+      document.myform.outputtext.value = "";
+    }
 
-  function doSend(message)
-  {
-    writeToScreen("sent: " + message + '\n'); 
-    websocket.send(message);
-  }
+    function doDisconnect() {
+      websocket.close();
+    }
+  </script>
+  <body>
+    <div class="left"></div>
+    <div class="right"></div>
+    <div class="field">
+      <header class="header">
+        <div class="player1_container">
+          <div class="player1CardsContainer"></div>
+          <h3 class="text-h3">
+            <span class="badge bg-info text-dark player1-role"></span>
+          </h3>
+          <h3 class="text-h3">
+            <span class="badge bg-light text-dark player1-name"></span>
+          </h3>
+        </div>
+      </header>
+      <section class="form">
+        <form name="myform">
+          <p>
+            <textarea name="outputtext" rows="10" cols="50"></textarea>
+          </p>
+          <p>
+            <textarea name="inputtext" cols="50"></textarea>
+          </p>
+          <p>
+            <textarea name="url" cols="50"></textarea>
+          </p>
+          <p>
+            <!-- <input
+              type="button"
+              name="sendButton"
+              value="Send"
+              onClick="sendText();"
+            /> -->
+            <!-- <input
+              type="button"
+              name="clearButton"
+              value="Clear"
+              onClick="clearText();"
+            /> -->
+            <!-- <input
+              type="button"
+              name="disconnectButton"
+              value="Disconnect"
+              onClick="doDisconnect();"
+            /> -->
+            <!-- <input
+              type="button"
+              name="connectButton"
+              value="Connect"
+              onClick="doConnect();"
+            /> -->
+          </p>
+        </form>
+      </section>
+      <section class="buttons">
+        <div class="buttons_container text-center">
+          <button
+            type="button"
+            class="btn btn-light"
+            name="sendButton"
+            value="Send"
+            onClick="sendText();"
+          >
+            Send
+          </button>
+          <button
+            type="button"
+            class="btn btn-light"
+            name="clearButton"
+            value="Clear"
+            onClick="clearText();"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="btn btn-light"
+            name="disconnectButton"
+            value="Disconnect"
+            onClick="doDisconnect();"
+          >
+            Disconnect
+          </button>
+          <button
+            type="button"
+            class="btn btn-light"
+            name="connectButton"
+            value="Connect"
+            onClick="doConnect();"
+          >
+            Connect
+          </button>
+        </div>
+      </section>
+      <section class="content">
+        <div class="data">
+          <div id="output"></div>
+        </div>
+        <div class="deck_flex">
+          <img src="img/card-back.png" alt="Card back" class="card_img" />
+        </div>
+      </section>
+      <footer class="footer">
+        <div class="player0">
+          <h3 class="text-h3">
+            <span class="badge bg-light player0-name text-dark">Player0</span>
+          </h3>
+          <h3 class="text-h3">
+            <span class="badge bg-info text-dark player0-role">Info</span>
+          </h3>
+          <div class="cards_container"></div>
+        </div>
+      </footer>
+    </div>
+  </body>
 
-  function writeToScreen(message)
-  {
-    document.myform.outputtext.value += message
-	document.myform.outputtext.scrollTop = document.myform.outputtext.scrollHeight;
-
-  }
-
-  window.addEventListener("load", init, false);
-
-
-   function sendText() {
-		doSend( document.myform.inputtext.value );
-   }
-
-  function clearText() {
-		document.myform.outputtext.value = "";
-   }
-
-   function doDisconnect() {
-		websocket.close();
-   }
-
-
-</script>
-
-<div id="output"></div>
-
-<form name="myform">
-<p>
-<textarea name="outputtext" rows="20" cols="50"></textarea>
-</p>
-<p>
-<textarea name="inputtext" cols="50"></textarea>
-</p>
-<p>
-<textarea name="url" cols="50"></textarea>
-</p>
-<p>
-<input type="button" name=sendButton value="Send" onClick="sendText();">
-<input type="button" name=clearButton value="Clear" onClick="clearText();">
-<input type="button" name=disconnectButton value="Disconnect" onClick="doDisconnect();">
-<input type="button" name=connectButton value="Connect" onClick="doConnect();">
-</p>
-
-
-</form>
-</html> 
+  <script src="main.js"></script>
+</html>

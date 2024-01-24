@@ -1,0 +1,180 @@
+
+body {
+    margin: 0;
+    height: 100vh;
+    background-image: url(/img/bcg-green.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    padding: 0;
+    margin: 0;
+}
+
+.data {
+    background-color: white;
+}
+
+.form {
+    top: 20px;
+    left: 20px;
+    position: absolute;
+}
+
+.text-h3 {
+    text-align: center;
+}
+
+.header {
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.buttons {
+    right: 0;
+    position: absolute;
+}
+
+.buttons_container {
+    padding: 20px;
+}
+
+.player1CardsContainer {
+    margin-top: 20px;
+    position: relative;
+    width: 300px;
+    height: 150px;
+    transform: scaleY(-1);
+}
+
+.player1 {
+    align-items: end;
+}
+
+.content {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    flex-grow: 1;
+    flex: 1 0 auto;
+}
+
+.deck_flex {
+    width: 300px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.left {
+    float: left;
+    width: 100px;
+    min-height: 100%;
+}
+
+.right {
+    float: right;
+    width: 100px;
+    min-height: 100%;
+}
+
+.footer {
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.cards_container {
+    margin-bottom: 20px;
+    position: relative;
+    width: 300px;
+    height: 150px;
+}
+
+.card_img {
+    width: 81px;
+    height: 120px;
+}
+
+.cards_number-lastCard {
+    transform: rotate(-90deg);
+    position: absolute;
+    left: 25%;
+    z-index: -2;
+}
+
+.cards_number-6, .cards_number-5, .cards_number-4, .cards_number-3, .cards_number-2, .cards_number-1 {
+    position: absolute;
+}
+
+.cards_number-6:nth-of-type(1) {
+    transform: rotate(-35deg);
+    top: 35px;
+    left: 20px;
+}
+
+.cards_number-6:nth-of-type(2) {
+    transform: rotate(-20deg);
+    top: 20px;
+    left: 56px;
+}
+
+.cards_number-6:nth-of-type(3) {
+    transform: rotate(-5deg);
+    top: 15px;
+    left: 92px;
+}
+
+.cards_number-6:nth-of-type(4) {
+    transform: rotate(5deg);
+    top: 15px;
+    left: 128px;
+}
+
+.cards_number-6:nth-of-type(5) {
+    transform: rotate(20deg);
+    top: 20px;
+    left: 164px;
+}
+
+.cards_number-6:nth-of-type(6) {
+    transform: rotate(35deg);
+    top: 35px;
+    left: 200px;
+}
+
+.cards_number-5:nth-of-type(1) {
+    transform: rotate(-30deg);
+}
+
+.cards_number-5:nth-of-type(2) {
+    transform: rotate(-15deg);
+}
+
+.cards_number-5:nth-of-type(3) {
+    top: 35px;
+    left: 200px;
+}
+
+.cards_number-5:nth-of-type(4) {
+    transform: rotate(15deg);
+}
+
+.cards_number-5:nth-of-type(5) {
+    transform: rotate(30deg);
+}
+  
