@@ -5,7 +5,7 @@ const suitsMapping = {
     '♠️': 'spades',
 };
 
-const response = {"players_count": 2, "deck": [["♠️", "J"], ["♦️", "J"], ["♣️", "9"], ["♣️", "Q"], ["♦️", "9"], ["♦️", "8"], ["♠️", "10"], ["♣️", "6"], ["♠️", "A"], ["♥️", "8"], ["♥️", "7"], ["♥️", "6"], ["♣️", "J"], ["♦️", "K"], ["♣️", "A"], ["♠️", "7"], ["♣️", "K"], ["♥️", "Q"], ["♥️", "J"], ["♣️", "7"], ["♥️", "A"], ["♦️", "10"], ["♦️", "6"], ["♠️", "9"]], "active_suit": "♠️", "attacker": [["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], "defender": [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]], "players": [[["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]]], "suits": ["♥️", "♦️", "♣️", "♠️"], "ranks": ["6", "7", "8", "9", "10", "J", "Q", "K", "A"], "passes": 0}
+var response = {"players_count": 2, "deck": [["♠️", "J"], ["♦️", "J"], ["♣️", "9"], ["♣️", "Q"], ["♦️", "9"], ["♦️", "8"], ["♠️", "10"], ["♣️", "6"], ["♠️", "A"], ["♥️", "8"], ["♥️", "7"], ["♥️", "6"], ["♣️", "J"], ["♦️", "K"], ["♣️", "A"], ["♠️", "7"], ["♣️", "K"], ["♥️", "Q"], ["♥️", "J"], ["♣️", "7"], ["♥️", "A"], ["♦️", "10"], ["♦️", "6"], ["♠️", "9"]], "active_suit": "♠️", "attacker": [["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], "defender": [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]], "players": [[["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]]], "suits": ["♥️", "♦️", "♣️", "♠️"], "ranks": ["6", "7", "8", "9", "10", "J", "Q", "K", "A"], "passes": 0}
 
 const renderCard = (card, container, cardsNumber) => {
     const [symbol, rank] = card;
@@ -61,8 +61,12 @@ const renderActiveSuit = (activeSuit) => {
     activeSuitTextEl.textContent = `Active Suit: ${activeSuit}`;
 };
 
-const render = (response) => {
-    const { players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes } = response;
+function render (response) {
+    console.log(response)
+    console.log(response["players"])
+
+    console.log(response.players[0])
+    const { players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes } = JSON.parse(response);
 
     // Рисуем карты текущего игрока
     const player0 = players[0];
@@ -85,4 +89,4 @@ const render = (response) => {
     renderActiveSuit(active_suit);
 }
 
-render(response);
+//render(response);
