@@ -13,6 +13,7 @@ const renderCard = (card, container, cardsNumber) => {
     const image = document.createElement('img');
     image.classList.add('card_img');
     image.classList.add(`cards_number-${cardsNumber}`);
+    image.classList.add(`cards_number-${cardsNumber}-hover`);
     image.src = `/img/${suit}${rank}.png`;
     container.appendChild(image);
 };

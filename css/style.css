@@ -108,6 +108,8 @@ h1, h2, h3, h4, h5, h6, p {
 .card_img {
     width: 81px;
     height: 120px;
+    border-radius: 7px;
+    transition: transform 250ms;
 }
 
 .cards_number-lastCard {
@@ -157,7 +159,35 @@ h1, h2, h3, h4, h5, h6, p {
     left: 200px;
 }
 
-.cards_number-5:nth-of-type(1) {
+.cards_number-6-hover:hover {
+    box-shadow: 0px 0px 10px yellow;
+}
+
+.cards_number-6-hover:nth-of-type(1):hover {
+    transform: rotate(-35deg) translateY(-20px);
+}
+
+.cards_number-6-hover:nth-of-type(2):hover {
+    transform: rotate(-20deg) translateY(-20px);
+}
+
+.cards_number-6-hover:nth-of-type(3):hover {
+    transform: rotate(-5deg) translateY(-20px);;
+}
+
+.cards_number-6-hover:nth-of-type(4):hover {
+    transform: rotate(5deg) translateY(-20px);
+}
+
+.cards_number-6-hover:nth-of-type(5):hover {
+    transform: rotate(20deg) translateY(-20px);
+}
+
+.cards_number-6-hover:nth-of-type(6):hover {
+    transform: rotate(35deg) translateY(-20px);
+}
+
+/* .cards_number-5:nth-of-type(1) {
     transform: rotate(-30deg);
 }
 
@@ -176,5 +206,5 @@ h1, h2, h3, h4, h5, h6, p {
 
 .cards_number-5:nth-of-type(5) {
     transform: rotate(30deg);
-}
+} */
   
