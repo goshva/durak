@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import durak_class as du
 import json
 import pathlib

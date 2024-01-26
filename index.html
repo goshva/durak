@@ -1,135 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <meta charset="utf-8" />
-  <head>
-    <title>WebSocket Test</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-  </head>
+<meta charset="utf-8" />
 
+<head>
+  <title>WebSocket Test</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+</head>
 
-  <body>
-    <div class="left"></div>
-    <div class="right"></div>
-    <div class="field">
-      <header class="header">
-        <div class="player1_container">
-          <div class="player1CardsContainer"></div>
-          <h3 class="text-h3">
-            <span class="badge bg-info text-dark player1-role"></span>
-          </h3>
-          <h3 class="text-h3">
-            <span class="badge bg-light text-dark player1-name"></span>
-          </h3>
-        </div>
-      </header>
-      <section class="form">
-        <form name="myform">
-          <p>
-            <textarea name="outputtext" rows="10" cols="50"></textarea>
-          </p>
-          <p>
-            <textarea name="inputtext" cols="50"></textarea>
-          </p>
-          <p>
-            <textarea name="url" cols="50"></textarea>
-          </p>
-          <p>
-            <!-- <input
-              type="button"
-              name="sendButton"
-              value="Send"
-              onClick="sendText();"
-            /> -->
-            <!-- <input
-              type="button"
-              name="clearButton"
-              value="Clear"
-              onClick="clearText();"
-            /> -->
-            <!-- <input
-              type="button"
-              name="disconnectButton"
-              value="Disconnect"
-              onClick="doDisconnect();"
-            /> -->
-            <!-- <input
-              type="button"
-              name="connectButton"
-              value="Connect"
-              onClick="doConnect();"
-            /> -->
-          </p>
-        </form>
-      </section>
-      <section class="buttons">
-        <div class="buttons_container text-center">
-          <button
-            type="button"
-            class="btn btn-light"
-            name="sendButton"
-            value="Send"
-            onClick="sendText();"
-          >
-            Send
-          </button>
-          <button
-            type="button"
-            class="btn btn-light"
-            name="clearButton"
-            value="Clear"
-            onClick="clearText();"
-          >
-            Clear
-          </button>
-          <button
-            type="button"
-            class="btn btn-light"
-            name="disconnectButton"
-            value="Disconnect"
-            onClick="doDisconnect();"
-          >
-            Disconnect
-          </button>
-          <button
-            type="button"
-            class="btn btn-light"
-            name="connectButton"
-            value="Connect"
-            onClick="doConnect();"
-          >
-            Connect
-          </button>
-        </div>
-      </section>
-      <section class="content">
-        <div class="data">
-          <div id="output"></div>
-        </div>
-        <div class="deck_flex">
-          <img src="img/card-back.png" alt="Card back" class="card_img" />
-        </div>
-      </section>
-      <footer class="footer">
-        <div class="player0">
-          <h3 class="text-h3">
-            <span class="badge bg-light player0-name text-dark">Player0</span>
-          </h3>
-          <h3 class="text-h3">
-            <span class="badge bg-info text-dark player0-role">Info</span>
-          </h3>
-          <div class="cards_container"></div>
-        </div>
-      </footer>
-    </div>
-  </body>
+<body>
+  <div class="left"></div>
+  <div class="right"></div>
+  <div class="field">
+    <header class="header">
+      <div class="player1_container">
+        <div class="player1CardsContainer"></div>
+        <h3 class="text-h3">
+          <span class="badge bg-info text-dark player1-role"></span>
+        </h3>
+        <h3 class="text-h3">
+          <span class="badge bg-light text-dark player1-name"></span>
+        </h3>
+      </div>
+    </header>
+    <section class="content">
+      <div class="data">
+        <div id="output"></div>
+      </div>
+      <div class="deck_flex">
+        <img src="img/card-back.png" alt="Card back" class="card_img" />
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="player0">
+        <h3 class="text-h3">
+          <span class="badge bg-light player0-name text-dark">Player0</span>
+        </h3>
+        <h3 class="text-h3">
+          <span class="badge bg-info text-dark player0-role">Info</span>
+        </h3>
+        <div class="cards_container"></div>
+      </div>
+    </footer>
+  </div>
+</body>
 
-  <script src="app.js"></script>
+<script src="app.js"></script>
 
-  <script src="main.js"></script>
+<script src="main.js"></script>
+
 </html>
