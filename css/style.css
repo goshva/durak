@@ -1,3 +1,9 @@
+html {
+   
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
 
 body {
     margin: 0;
@@ -22,7 +28,7 @@ h1, h2, h3, h4, h5, h6, p {
     position: absolute;
 }
 
-.text-h3 {
+.text-h4 {
     text-align: center;
 }
 
@@ -49,12 +55,52 @@ h1, h2, h3, h4, h5, h6, p {
     padding: 20px;
 }
 
-.player1CardsContainer {
-    margin-top: 20px;
+.left {
+    min-width: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right {
+    min-width: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-title {
+    margin-top: -80px;
+    margin-bottom: 80px;
+}
+
+.player3CardsContainer {
     position: relative;
     width: 300px;
-    height: 150px;
+    height: 120px;
+    transform: rotate(-90deg)
+}
+
+.player2CardsContainer {
+    position: relative;
+    width: 300px;
+    height: 120px;
+    transform: rotate(90deg)
+}
+
+.player1CardsContainer {
+    margin: 20px 0;
+    position: relative;
+    width: 300px;
+    height: 120px;
     transform: scaleY(-1);
+}
+
+.player0CardsContainer {
+    margin: 20px 0;
+    position: relative;
+    width: 300px;
+    height: 120px;
 }
 
 .player1 {
@@ -65,17 +111,34 @@ h1, h2, h3, h4, h5, h6, p {
     height: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 20px;
     flex-grow: 1;
     flex: 1 0 auto;
+    position: relative;
+}
+
+.card_table {
+}
+
+.deck_card {
+    position: absolute;
 }
 
 .deck_flex {
-    width: 300px;
+    position: absolute;
+    width: 200px;
     display: flex;
     position: relative;
     justify-content: center;
     align-items: center;
+}
+
+.table_grid {
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 65px);
+    justify-items: center;
 }
 
 .left {
@@ -98,16 +161,9 @@ h1, h2, h3, h4, h5, h6, p {
     flex: 0 0 auto;
 }
 
-.cards_container {
-    margin-bottom: 20px;
-    position: relative;
-    width: 300px;
-    height: 150px;
-}
-
 .card_img {
-    width: 81px;
-    height: 120px;
+    width: 57px;
+    height: 89px;
     border-radius: 7px;
     transition: transform 250ms;
 }
@@ -115,7 +171,7 @@ h1, h2, h3, h4, h5, h6, p {
 .cards_number-lastCard {
     transform: rotate(-90deg);
     position: absolute;
-    left: 25%;
+    right: 25%;
     z-index: -2;
 }
 
@@ -125,38 +181,36 @@ h1, h2, h3, h4, h5, h6, p {
 
 .cards_number-6:nth-of-type(1) {
     transform: rotate(-35deg);
-    top: 35px;
-    left: 20px;
+    top: 25px;
+    left: 50px;
 }
 
 .cards_number-6:nth-of-type(2) {
     transform: rotate(-20deg);
-    top: 20px;
-    left: 56px;
+    top: 10px;
+    left: 80px;
 }
 
 .cards_number-6:nth-of-type(3) {
     transform: rotate(-5deg);
-    top: 15px;
-    left: 92px;
+    left: 110px;
 }
 
 .cards_number-6:nth-of-type(4) {
     transform: rotate(5deg);
-    top: 15px;
-    left: 128px;
+    right: 110px;
 }
 
 .cards_number-6:nth-of-type(5) {
     transform: rotate(20deg);
-    top: 20px;
-    left: 164px;
+    top: 10px;
+    right: 80px;
 }
 
 .cards_number-6:nth-of-type(6) {
     transform: rotate(35deg);
-    top: 35px;
-    left: 200px;
+    top: 25px;
+    right: 50px;
 }
 
 .cards_number-6-hover:hover {
@@ -207,4 +261,8 @@ h1, h2, h3, h4, h5, h6, p {
 .cards_number-5:nth-of-type(5) {
     transform: rotate(30deg);
 } */
+
+.move-to-0 {
+    transform: translateX(20px)
+}
   
