@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8765:8765"
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+      - ./:/var/www
+      
+    depends_on:
+      - web
