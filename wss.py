@@ -35,10 +35,10 @@ async def broadcast(message):
     print(i)
     if i==2:
        
-        await asyncio.wait([client.send(j1)for client in clients])
+        await asyncio.wait([client.send(json.dumps(j1))for client in clients])
     if i==3:
        
-        await asyncio.wait([client.send(j2)for client in clients]) 
+        await asyncio.wait([client.send(json.dumps(j2))for client in clients]) 
       
     else:
         game = du.DurakGame(i)
