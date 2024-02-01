@@ -14,6 +14,22 @@
   </head>
 
   <body>
+    <dialog open class="players_number_dialogue">
+      <div class="logo">
+        <img src="./img/durak_logo.png" alt="Durak logo" class="logo_img">
+      </div>
+      <div class="players_number_flex">
+        <button class="players_number_button" data-players-number="2">
+          <p class="text-dark players_number_button_text">Вдвоем</p>
+        </button>
+        <button class="players_number_button" data-players-number="3">
+          <p class="text-dark players_number_button_text">Втроем</p>
+        </button>
+        <button class="players_number_button" data-players-number="4">
+          <p class="text-dark players_number_button_text">Вчетвером</p>
+        </button>
+      </div>
+    </dialog>
     <div class="left">
       <div class="player2_container">
         <div class="player-title">
@@ -21,7 +37,7 @@
             <span class="badge bg-light text-dark player2-name"></span>
           </h4>
           <h4 class="text-h4">
-            <span class="badge bg-info text-dark player2-role">Info</span>
+            <span class="badge bg-info text-dark player2-role"></span>
           </h4>
         </div>
         <div class="player2CardsContainer"></div>
@@ -34,7 +50,7 @@
             <span class="badge bg-light text-dark player3-name"></span>
           </h4>
           <h4 class="text-h4">
-            <span class="badge bg-info text-dark player3-role">Info</span>
+            <span class="badge bg-info text-dark player3-role"></span>
           </h4>
         </div>
         <div class="player3CardsContainer"></div>
@@ -45,7 +61,7 @@
         <div class="player1_container">
           <div class="player1CardsContainer"></div>
           <h4 class="text-h4">
-            <span class="badge bg-info text-dark player1-role">Info</span>
+            <span class="badge bg-info text-dark player1-role"></span>
           </h4>
           <h4 class="text-h4">
             <span class="badge bg-light text-dark player1-name"></span>
@@ -57,18 +73,17 @@
           <div id="output"></div>
         </div> -->
         <div class="deck_flex">
-          <img src="img/card-back.png" alt="Card back" class="card_img" />
         </div>
         <div class="table_grid"></div>
-        <div class="deck_flex"></div>
+        <div class=></div>
       </section>
       <footer class="footer">
         <div class="player0_container">
           <h4 class="text-h4">
-            <span class="badge bg-light player0-name text-dark">Player0</span>
+            <span class="badge bg-light player0-name text-dark"></span>
           </h4>
           <h4 class="text-h4">
-            <span class="badge bg-info text-dark player0-role">Info</span>
+            <span class="badge bg-info text-dark player0-role"></span>
           </h4>
           <div class="player0CardsContainer"></div>
         </div>
@@ -76,7 +91,7 @@
     </div>
   </body>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 
   <script src="main.js"></script>
 </html>
