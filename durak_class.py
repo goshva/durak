@@ -8,7 +8,8 @@ class DurakGame:
         self.attacker = ''
         self.defender = ''
         self.players = list(range(players_count))
-        self.suits = ['♥', '♦', '♣', '♠️']
+       # self.suits = ['♥', '♦', '♣', '♠️']
+        self.suits = ['Ch', 'B', 'K', 'P']
         self.ranks = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
         self.passes = 0
 
@@ -28,7 +29,8 @@ class DurakGame:
         self.create_deck()
         self.shuffle_deck()
         self.deal_cards()
-        self.active_suit = random.choice(['♥', '♦', '♣', '♠️'])
+        #self.active_suit = random.choice(['♥', '♦', '♣', '♠️'])
+        self.active_suit = random.choice(['Ch', 'B', 'K', 'P'])
         self.attacker = self.find_lowest_trump()
         #random.choice(list(self.players.keys()))
         self.defender = self.get_next_player(self.attacker)
