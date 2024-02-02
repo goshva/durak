@@ -1,10 +1,207 @@
-let response = {"players_count": 2, "deck": [["♠️", "J"], ["♦️", "J"], ["♣️", "9"], ["♣️", "Q"], ["♦️", "9"], ["♦️", "8"], ["♠️", "10"], ["♣️", "6"], ["♠️", "A"], ["♥️", "8"], ["♥️", "7"], ["♥️", "6"], ["♣️", "J"], ["♦️", "K"], ["♣️", "A"], ["♠️", "7"], ["♣️", "K"], ["♥️", "Q"], ["♥️", "J"], ["♣️", "7"], ["♥️", "A"], ["♦️", "10"], ["♦️", "6"], ["♠️", "9"]], "active_suit": "♠️", "attacker": [["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], "defender": [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]], "players": [[["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]], [["♠️", "J"], ["♦️", "J"], ["♣️", "9"], ["♣️", "Q"], ["♦️", "9"], ["♦️", "8"]], [["♥️", "J"], ["♣️", "7"], ["♥️", "A"], ["♦️", "10"], ["♦️", "6"], ["♠️", "9"]]], "suits": ["♥️", "♦️", "♣️", "♠️"], "ranks": ["6", "7", "8", "9", "10", "J", "Q", "K", "A"], "passes": 1}
+//import {a} from '/main.js';
 
+//let response = {"players_count": 2, "deck": [["♠️", "J"], ["♦️", "J"], ["♣️", "9"], ["♣️", "Q"], ["♦️", "9"], ["♦️", "8"], ["♠️", "10"], ["♣️", "6"], ["♠️", "A"], ["♥️", "8"], ["♥️", "7"], ["♥️", "6"], ["♣️", "J"], ["♦️", "K"], ["♣️", "A"], ["♠️", "7"], ["♣️", "K"], ["♥️", "Q"], ["♥️", "J"], ["♣️", "7"], ["♥️", "A"], ["♦️", "10"], ["♦️", "6"], ["♠️", "9"]], "active_suit": "♠️", "attacker": [["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], "defender": [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]], "players": [[["♠️", "Q"], ["♠️", "8"], ["♦️", "7"], ["♣️", "8"], ["♠️", "6"], ["♦️", "A"]], [["♥️", "K"], ["♥️", "9"], ["♥️", "10"], ["♦️", "Q"], ["♣️", "10"], ["♠️", "K"]], [["♠️", "J"], ["♦️", "J"], ["♣️", "9"], ["♣️", "Q"], ["♦️", "9"], ["♦️", "8"]], [["♥️", "J"], ["♣️", "7"], ["♥️", "A"], ["♦️", "10"], ["♦️", "6"], ["♠️", "9"]]], "suits": ["♥️", "♦️", "♣️", "♠️"], "ranks": ["6", "7", "8", "9", "10", "J", "Q", "K", "A"], "passes": 1}
+let response={ "players_count": 5, "deck": [ ["Ch", "J" ],["B","K"],["Ch","8"],["Ch","9"],["K","8"],["P", "J"]],"active_suit": "B","attacker": [[ "P",
+            "Q"],["K","7"],["B","10"],["P","A"
+        ],
+        [
+            "B",
+            "6"
+        ],
+        [
+            "B",
+            "7"
+        ]
+    ],
+    "defender": [
+        [
+            "P",
+            "K"
+        ],
+        [
+            "K",
+            "10"
+        ],
+        [
+            "P",
+            "8"
+        ],
+        [
+            "K",
+            "K"
+        ],
+        [
+            "Ch",
+            "6"
+        ],
+        [
+            "P",
+            "9"
+        ]
+    ],
+    "players": [
+        [
+            [
+                "P",
+                "Q"
+            ],
+            [
+                "K",
+                "7"
+            ],
+            [
+                "B",
+                "10"
+            ],
+            [
+                "P",
+                "A"
+            ],
+            [
+                "B",
+                "6"
+            ],
+            [
+                "B",
+                "7"
+            ]
+        ],
+        [
+            [
+                "P",
+                "K"
+            ],
+            [
+                "K",
+                "10"
+            ],
+            [
+                "P",
+                "8"
+            ],
+            [
+                "K",
+                "K"
+            ],
+            [
+                "Ch",
+                "6"
+            ],
+            [
+                "P",
+                "9"
+            ]
+        ],
+        [
+            [
+                "K",
+                "A"
+            ],
+            [
+                "B",
+                "J"
+            ],
+            [
+                "B",
+                "A"
+            ],
+            [
+                "Ch",
+                "K"
+            ],
+            [
+                "B",
+                "8"
+            ],
+            [
+                "B",
+                "Q"
+            ]
+        ],
+        [
+            [
+                "B",
+                "9"
+            ],
+            [
+                "Ch",
+                "A"
+            ],
+            [
+                "Ch",
+                "7"
+            ],
+            [
+                "P",
+                "6"
+            ],
+            [
+                "P",
+                "10"
+            ],
+            [
+                "K",
+                "6"
+            ]
+        ],
+        [
+            [
+                "Ch",
+                "Q"
+            ],
+            [
+                "P",
+                "7"
+            ],
+            [
+                "K",
+                "J"
+            ],
+            [
+                "K",
+                "9"
+            ],
+            [
+                "K",
+                "Q"
+            ],
+            [
+                "Ch",
+                "10"
+            ]
+        ]
+    ],
+    "suits": [
+        "Ch",
+        "B",
+        "K",
+        "P"
+    ],
+    "ranks": [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+        "A"
+    ],
+    "passes": 0
+}
 const suitsMapping = {
-    "♥️": 'hearts',
-    "♦️": 'diamonds',
-    "♣️": 'clubs',
-    "♠️": 'spades',
+    "♥️": "hearts",
+    "♦️": "diamonds",
+    "♣️": "clubs",
+    "♠️": "spades",
+};
+
+const suitsMapping2 = {
+    'Ch': "hearts",
+    'B': "diamonds",
+    'K': "clubs",
+    'P': "spades",
 };
 
 const passesMapping = {
@@ -25,9 +222,13 @@ const passesMapping = {
     },
 };
 
-const renderCard = (card, container, cardsNumber, passes) => {
-    const [symbol, rank] = card;
-    const suit = suitsMapping[symbol];
+const renderCard =async (card, container, cardsNumber, passes) => {
+ 
+   const [symbol, rank] = [card[0],card[1]];
+   //const [symbol, rank] =["♦️", "8"]
+    console.log(symbol,rank)
+    const suit = suitsMapping2[symbol];
+    console.log(suit)
     const image = document.createElement('img');
     image.classList.add('card_img');
     image.classList.add(`cards_number-${cardsNumber}`);
@@ -36,7 +237,7 @@ const renderCard = (card, container, cardsNumber, passes) => {
     // Карты кладутся на стол в зависимости от их количества, если я правильно понимаю
     // что pass это те карты которые сейчас в игре???
     image.addEventListener('click', () => {
-        passesMapping[passes](image);
+        passes?passesMapping[passes](image):'';
         image.style.top = '-256px';
         image.classList.remove(`cards_number-${cardsNumber}-hover`);
         image.style.transform = 'none';
@@ -49,13 +250,13 @@ const renderBackCard = (container, className) => {
     image.classList.add('card_img');
     image.classList.add(className);
     image.src = '/img/card-back.png';
-    container.appendChild(image);
+    container?container.appendChild(image):null;
 };
 
-const renderCards = (player, container, current, passes) => {
+const renderCards =async(player, container, current, passes) => {
     const cardsNumber = player.length;
-    current ? player.forEach((card) => renderCard(card, container, cardsNumber, passes)) :
-        player.forEach(() => renderBackCard(container, `cards_number-${cardsNumber}`));
+    current ?await player.forEach((card) =>  renderCard(card, container, cardsNumber, passes)) :
+    await player.forEach(() =>  renderBackCard(container, `cards_number-${cardsNumber}`));
 }
 
 const renderPlayerRoles = (players, attacker, defender) => {
@@ -72,13 +273,14 @@ const renderPlayerRoles = (players, attacker, defender) => {
 const renderPlayersNames = () => {
     for (let i = 0; i < 4; i += 1) {
         const playerNameTextEl = document.querySelector(`.player${i}-name`);
-        console.log(playerNameTextEl)
+       
         playerNameTextEl.textContent = `player${i}`;
     }
 };
 
 const renderDeck = (deck) => {
     const lastCard = deck[deck.length - 1];
+    console.log(lastCard)
     const container = document.querySelector('.deck_flex');
     renderCard(lastCard, container, 'lastCard');
     deck.forEach(() => renderBackCard(container, 'deck_card'));
@@ -90,7 +292,7 @@ const renderDeck = (deck) => {
     });
 };
 
-const renderPlayerCards = (players, currentPlayer, passes) => {
+const renderPlayerCards =async (players, currentPlayer, passes) => {
     let i = 0;
     players.forEach((player) => {
         const playerCardsDiv = document.querySelector(`.player${i}CardsContainer`);
@@ -102,24 +304,25 @@ const renderPlayerCards = (players, currentPlayer, passes) => {
 
 }
 
-const render = (response) => {
-    const { players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes } = response;
+const render =async (response) => {
+    let r=response;
+    const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes];
 
     // Рисуем карты игроков
-    renderPlayerCards(players, players[0], passes);
-
+  await renderPlayerCards(players, players[0],passes);
+//console.log(players[0])
     // Рисуем колоду
-    renderDeck(deck);
+     renderDeck(deck);
 
     // Рисуем роли
-    renderPlayerRoles(players, attacker, defender)
+     renderPlayerRoles(players, attacker, defender)
 
     // Рисуем имена игроков
-    renderPlayersNames();
+     renderPlayersNames();
 
 };
 
-function connect() {
+async function connect() {
   var ws = new WebSocket('ws://localhost:8765');
   ws.onopen = function() {
     // subscribe to some channels
@@ -128,11 +331,12 @@ function connect() {
     }));
   };
 
-  ws.onmessage = function(e) {
-    console.log('Message:', e.data);
-    response = JSON.parse(e.data);
-    render(response);
-
+  ws.onmessage = async function(e) {
+    //console.log('Message:', e.data);
+ let response = JSON.parse(e.data);
+    console.log(response);
+    await render(response);
+    
   };
 
   ws.onclose = function(e) {
@@ -148,5 +352,5 @@ function connect() {
   };
 }
 
-connect();
-render(response);
+await connect();
+await render(response);
