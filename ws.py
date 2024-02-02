@@ -10,14 +10,17 @@ import json
 #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 #localhost_pem = pathlib.Path(__file__).with_name("key_cert.pem")
 #ssl_context.load_cert_chain(localhost_pem)
-j11=open("durak/2.json", "r")
-j1=j11.read()
+j11=open("2.json", "r")
+j2=j11.read()
 j11.close()
 
-j22=open("durak/3.json", "r")
-j2=j22.read()
+j22=open("3.json", "r")
+j3=j22.read()
 j22.close()
 
+j33=open("4.json", "r")
+j4=j33.read()
+j33.close()
 
 
 
@@ -32,12 +35,15 @@ async def socket(message):
 async def broadcast(message):
     i=len(clients)
     print(i)
+    print(message)
     if i==2:
-       await socket(json.dumps(j1))
+       await socket(j2)
     if i==3:
-       await socket(json.dumps(j2))
+       await socket(j3)
+    if i==4:
+       await socket(j4) 
     else:
-        if i!=0:        
+        if i>=5:        
              game = du.DurakGame(i)
              game_state = game.play_game()
              massmessage = json.dumps(game_state.__dict__, ensure_ascii=False)
