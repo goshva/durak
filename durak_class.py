@@ -100,5 +100,5 @@ class DurakGame:
         return(self)
 
 # Example usage
-game = DurakGame(2)
-game.play_game()
+#game = DurakGame(2)
+#game.play_game()
