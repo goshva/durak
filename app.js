@@ -35,13 +35,15 @@ const passesMapping = {
     },
 };
 
-const renderCard =async (card, container, cardsNumber, passes) => {
+const playerCardsDiv0 = document.querySelector(`.player0CardsContainer`);
+
+const renderCard =async (card, container, cardsNumber,passes ) => {
  
    const [symbol, rank] = [card[0],card[1]];
    //const [symbol, rank] =["♦️", "8"]
-    console.log(symbol,rank)
+    //console.log(symbol,rank)
     const suit = suitsMapping2[symbol];
-    console.log(suit)
+    //console.log(suit)
     const image = document.createElement('img');
     image.classList.add('card_img');
     image.classList.add(`cards_number-${cardsNumber}`);
@@ -55,7 +57,7 @@ const renderCard =async (card, container, cardsNumber, passes) => {
         image.classList.remove(`cards_number-${cardsNumber}-hover`);
         image.style.transform = 'none';
     });
-    container.appendChild(image);
+    container?container.appendChild(image):null;
 };
 
 const renderBackCard = (container, className) => {
@@ -75,9 +77,12 @@ const renderCards =async(player, container, current, passes) => {
 const renderPlayerRoles = (players, attacker, defender) => {
     for (let i = 0; i < players.length; i += 1) {
         const playerRoleTextEl = document.querySelector(`.player${i}-role`);
-        if (JSON.stringify(players[i]) === JSON.stringify(attacker)) {
+        let a=((attacker[0][0]===players[i][0][0])&&(attacker[0][1]===players[i][0][1]))
+        let b=((defender[0][0]===players[i][0][0])&&(defender[0][1]===players[i][0][1]))
+        console.log( a)
+        if (a) {
             playerRoleTextEl.textContent = 'attacker';
-        } else if (JSON.stringify(players[i]) === JSON.stringify(defender)) {
+        } else if (b){
             playerRoleTextEl.textContent = 'defender';
         }
     }
@@ -93,24 +98,25 @@ const renderPlayersNames = () => {
 
 const renderDeck = (deck) => {
     const lastCard = deck[deck.length - 1];
-    console.log(lastCard)
+    //console.log(lastCard)
     const container = document.querySelector('.deck_flex');
     renderCard(lastCard, container, 'lastCard');
     deck.forEach(() => renderBackCard(container, 'deck_card'));
     const deckCards = document.querySelectorAll('.deck_card');
-    let i = 0;
-    deckCards.forEach((image) => {
-        image.style.top = `${i * 2}px`;
-        i += 1;
+    //let i = 0;
+    deckCards.forEach((image,index) => {
+        image.style.top = `${index * 2}px`;
+       // i += 1;
     });
 };
 
 const renderPlayerCards =async (players, currentPlayer, passes) => {
-    let i = 0;
-    players.forEach((player) => {
-        const playerCardsDiv = document.querySelector(`.player${i}CardsContainer`);
-        i += 1;
-        console.log(i)
+    //let i = 0;
+    players.forEach((player,index) => {
+        const playerCardsDiv = document.querySelector(`.player${index}CardsContainer`);
+       
+       // i += 1;
+        //console.log(i)
         player === currentPlayer ? renderCards(player, playerCardsDiv, true, passes) :
         renderCards(player, playerCardsDiv, false, passes)
     })
@@ -119,10 +125,10 @@ const renderPlayerCards =async (players, currentPlayer, passes) => {
 
 const render =async (response) => {
     let r=response;
-    const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes];
+    const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes,target] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes,r.target];
 
     // Рисуем карты игроков
-  await renderPlayerCards(players, players[0],passes);
+  await renderPlayerCards(players, players[target],passes);
 //console.log(players[0])
     // Рисуем колоду
      renderDeck(deck);
@@ -135,26 +141,55 @@ const render =async (response) => {
 
 };
 
+var ws;
+
+
+//ws.addEventListener('message',router)
+//function router(e){let data=JSON.parse(e.data);console.log(data)}
+
+
+
+
+const start_game=document.getElementById('start_game')
+start_game.addEventListener('click',function(e){ws.send(JSON.stringify({
+    type: "start"
+}))})
+
+
+var id_prosses=null;
+console.log(id_prosses);
+
+//console.log(start_game)
 async function connect() {
-  var ws = new WebSocket('ws://localhost:8765');
+  ws = new WebSocket('ws://localhost:8765');
   ws.onopen = function() {
+    
     // subscribe to some channels
     ws.send(JSON.stringify({
-        "type": "hi"
+        type: "hi"
     }));
   };
+
 
   ws.onmessage = async function(e) {
     //console.log('Message:', e.data);
  let response = JSON.parse(e.data);
-    console.log(response);
-    await render(response);
+ //console.log(response)
+    if((response.id&&id_prosses===null)){id_prosses=response.id; console.log(response);}
+    
+    if(!response.id&&id_prosses){
+       // console.log(response)
+    
+    await render(response);}
     
   };
 
   ws.onclose = function(e) {
+    id_prosses=null;
     console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+
     setTimeout(function() {
+
       connect();
     }, 1000);
   };
