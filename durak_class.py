@@ -4,7 +4,7 @@ class DurakGame:
     def __init__(self, players_count):
         self.players_count = players_count
         self.deck = []
-        self.active_suit = ''
+        self.active_suit =''
         self.attacker = ''
         self.defender = ''
         self.players = list(range(players_count))
@@ -12,28 +12,37 @@ class DurakGame:
         self.suits = ['Ch', 'B', 'K', 'P']
         self.ranks = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
         self.passes = 0
-
+        self.target = 0
+        self.deck_id=[]
+        self.id=''
     def create_deck(self):
         self.deck = [(suit, rank) for suit in self.suits for rank in self.ranks]
-
+        
     def shuffle_deck(self):
         random.shuffle(self.deck)
+        
 
     def deal_cards(self):
         cards_per_player = 6 #len(self.deck) // self.players_count
         for player in self.players:
             dealt_cards = [self.deck.pop() for _ in range(cards_per_player)]
             self.players[player] = dealt_cards
+        self.s()#кидаем козыря    
 
     def start_game(self):
-        self.create_deck()
-        self.shuffle_deck()
-        self.deal_cards()
+        self.create_deck()#собираем колоду
+        self.shuffle_deck()#тасуем карты
+        self.deal_cards()#раздаем карты
         #self.active_suit = random.choice(['♥', '♦', '♣', '♠️'])
-        self.active_suit = random.choice(['Ch', 'B', 'K', 'P'])
-        self.attacker = self.find_lowest_trump()
+        #self.active_suit = random.choice(['Ch', 'B', 'K', 'P'])
+        #self.active_suit =self.deck[len(self.deck)-1]
+        self.attacker = self.find_lowest_trump()#определяем кто первый ходит
         #random.choice(list(self.players.keys()))
-        self.defender = self.get_next_player(self.attacker)
+        self.defender = self.get_next_player(self.attacker)#под кого ходят
+
+    def s(self):
+        self.active_suit =self.deck[len(self.deck)-1][0]
+        print(self.deck[len(self.deck)-1])
 
 
     def find_lowest_trump(self):
