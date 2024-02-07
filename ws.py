@@ -22,9 +22,12 @@ async def socket(message):
     for client in clients:
             await client.send(message)
 async def socketjson(g):
+    x=[(str(client.id)) for client in clients]
     i=0
     for client in clients:
+            g.deck_id =x
             g.target=i
+            g.id=str(client.id)
             i +=1
             await client.send(json.dumps(g.__dict__, ensure_ascii=False))            
 
