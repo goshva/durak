@@ -42,6 +42,9 @@ async def broadcast(client,message):
       await socketjson(game_state)
     if i>0 and e=="hi":
        await socket(json.dumps({"id":str(client.id)}))
+    if e=="set":
+       await socket(message)
+
 
 async def handle_client(client, path): 
     clients.add(client)
