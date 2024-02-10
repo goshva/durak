@@ -14,6 +14,7 @@ const app = () => {
         players_count: '',
         ranks: '',
         suits: '',
+        round: true,
     };
 
     const watchedState = onChange(state, render(state));
@@ -38,10 +39,14 @@ const app = () => {
                 }))
                 .then(() => {
                     dialogue.close();
+                    const dealCardsButton = document.querySelector('.deal_cards');
+                    dealCardsButton.style.display = 'block';
+                    dealCardsButton.addEventListener('click', () => {
+                      watchedState.round = false });
                     watchedState.init = true;
                 })
         })
-    })
+    });
 };
 
 function connect() {
