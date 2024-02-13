@@ -68,7 +68,7 @@ async def start_server():
 asyncio.run(start_server())
 
 
-#python -m http.server   localhost:8080/index.html
+#python -m http.server   localhost:8000/index.html
 #python ws.py
 #python -m pip install motor
 #pip install beanie
