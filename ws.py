@@ -24,10 +24,9 @@ clients = set()
 async def socket(message):
     for client in clients:
             await client.send(message)
-async def socketjson(g,x):    
+async def socketjson(g):    
     i=0
     for client in clients:
-            g.deck_id =x
             g.target=i
             g.id=str(client.id)
             i +=1
@@ -44,7 +43,7 @@ async def broadcast(client,message):
       game_state.name=x[0]
       game_state.deck_id=x
       await mg.example(game_state)
-      await socketjson(game_state,x)
+      await socketjson(game_state)
     if i>0 and e=="hi":
        await socket(json.dumps({"id":str(client.id)}))
     if e=="set":
@@ -53,6 +52,7 @@ async def broadcast(client,message):
 
 async def handle_client(client, path):
     clients.add(client)
+    #print(client)
     try:
         message = await client.recv()
         async for message in client:
@@ -68,7 +68,7 @@ async def start_server():
 asyncio.run(start_server())
 
 
-#python -m http.server   localhost:8000/index.html
+#python -m http.server   localhost:8080/index.html
 #python ws.py
 #python -m pip install motor
 #pip install beanie
