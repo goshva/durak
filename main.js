@@ -32,6 +32,7 @@ const A=["left:-9px","left:56px","left:121px","left:186px","left:251px"];
 export class DurakGame{
     constructor(r,ws){
         let self=this;
+        self.name=r.name;
         self.ws=ws;//Websockets()
         self.players_count = r.players_count;
         self.deck = r.deck;
@@ -62,7 +63,7 @@ imgclick(e){if( e.target .style.top ==='-256px')return
    e.target.classList.remove(`cards_number-${6}-hover`);
    e.target.style.transform = 'none';
   let d= e.target.dataset;
-   this.w_m={type:"set","players":d.play,"pos":d.pos,"id":this.id};//отправка рендера всем
+   this.w_m={type:"set","players":d.play,"pos":d.pos,"id":this.id,"deck_id":this.deck_id};//отправка рендера всем
    //this.players[d.play].splice(d.pos,1)
    
 }
