@@ -20,47 +20,68 @@ import dum as mg
 
 
 clients = set()
+clients0 = set()
 
-async def socket(message):
+async def socket0(client,msg):
+   
+    await client.send(msg)
+
+
+async def router(e):
+    gamers=e.get("deck_id")
+    #print(gamers)
+    for g in gamers:
+         await socket(g,e)
+
+
+async def socket(g,e):
     for client in clients:
-            await client.send(message)
-async def socketjson(g):    
+         if g==str(client.id):
+                await client.send(json.dumps(e))    
+           
+async def socketjson(g):
+    s= clients0.copy()   
     i=0
-    for client in clients:
+    for client in s:
             g.target=i
             g.id=str(client.id)
             i +=1
-            await client.send(json.dumps(g.__dict__, ensure_ascii=False))            
+            await client.send(json.dumps(g.__dict__, ensure_ascii=False))
+            clients.add(client)
+            clients0.discard(client)
+                        
 
 async def broadcast(client,message):
-    i=len(clients)
+    i=len(clients0)
     print(i)
     e=await mrm.socket_messj(message)
-    if i>1 and e=="start":
-      x=[(str(client.id)) for client in clients]
-      game = du.DurakGame(i)
-      game_state = game.play_game()
-      game_state.name=x[0]
-      game_state.deck_id=x
-      await mg.example(game_state)
-      await socketjson(game_state)
-    if i>0 and e=="hi":
-       await socket(json.dumps({"id":str(client.id)}))
-    if e=="set":
-       await socket(message)
+    et=e.get("type")
+    if (i>1 and i<5) and et=="start":
+       x=[(str(client.id)) for client in clients0]
+       game = du.DurakGame(i)
+       game_state = game.play_game()
+       game_state.name=x[0]
+       game_state.deck_id=x
+       await mg.example(game_state)
+       await socketjson(game_state)
+    if i>0 and et=="hi":
+       await socket0(client,json.dumps({"id":str(client.id)}))
+    if et=="set":
+       await router(e)
 
 
 async def handle_client(client, path):
-    clients.add(client)
+    clients0.add(client)
     #print(client)
     try:
         message = await client.recv()
         async for message in client:
-          await broadcast(client,message)
+            await broadcast(client,message)
     finally:
-        clients.remove(client)
-        await mg.example_dell(str(client.id))
-
+            clients0.discard(client)
+            clients.discard(client)
+            await mg.example_dell(str(client.id))
+            print(clients0)
 async def start_server():
     async with websockets.serve(handle_client, "0.0.0.0", 8765): #, ssl=ssl_context):
         await asyncio.Future()  # Run forever
