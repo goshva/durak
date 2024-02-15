@@ -24,16 +24,16 @@ renderDeck(deck);
 const start_game2=document.getElementById('start_game2')
 start_game2.addEventListener('click',function(e){ws.send(JSON.stringify({
     type: "start",n:2
-}));this.setAttribute('disabled',true)})
+}))})
 
 const start_game3=document.getElementById('start_game3')
 start_game3.addEventListener('click',function(e){ws.send(JSON.stringify({
     type: "start",n:3
-}));this.setAttribute('disabled',true)})
+}))})
 const start_game4=document.getElementById('start_game4')
 start_game4.addEventListener('click',function(e){ws.send(JSON.stringify({
     type: "start",n:4
-}));this.setAttribute('disabled',true)})
+}))})
 
 
 var id_prosses=null;
