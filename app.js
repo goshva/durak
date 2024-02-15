@@ -21,11 +21,18 @@ renderDeck(deck);
 
 
 };
- 
+const start_game2=document.getElementById('start_game2')
+start_game2.addEventListener('click',function(e){ws.send(JSON.stringify({
+    type: "start",n:2
+}));this.setAttribute('disabled',true)})
 
-const start_game=document.getElementById('start_game')
-start_game.addEventListener('click',function(e){ws.send(JSON.stringify({
-    type: "start"
+const start_game3=document.getElementById('start_game3')
+start_game3.addEventListener('click',function(e){ws.send(JSON.stringify({
+    type: "start",n:3
+}));this.setAttribute('disabled',true)})
+const start_game4=document.getElementById('start_game4')
+start_game4.addEventListener('click',function(e){ws.send(JSON.stringify({
+    type: "start",n:4
 }));this.setAttribute('disabled',true)})
 
 
@@ -49,12 +56,16 @@ async function connect() {
  let response = JSON.parse(e.data);
  //console.log(response)
  //console.log(response.deck_id)
-    if((response.id&&id_prosses===null)){id_prosses=response.id; console.log(response);}
+    if((response.id&&id_prosses===null)){id_prosses=response.id;// console.log(response);
+    }
     
     if((response?.deck_id)&&id_prosses){
      console.log(response.deck_id)
-     start_game .setAttribute('disabled',true)
+     start_game2.setAttribute('disabled',true)
     await rendersock(response);}
+    if(response.connect){let n=Number(response.connect);let buttons=[start_game2,start_game3,start_game4]
+    buttons.forEach((i,index)=>{if(index===(n-2)){i.textContent='PLAYERS';}i.setAttribute('disabled',true)})
+    }
     
   };
 
