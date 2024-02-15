@@ -78,7 +78,7 @@ async def broadcast(client,message):
     e=await mrm.socket_messj(message)
     et=e.get("type")
     en=e.get("n")
-    if (i>1 and i>=int(en)) and et=="start":
+    if et=="start" and (i>1 and i>=int(en)):
        await client.send(json.dumps({"connect":en}))
        new_clients=await cln(int(en),client)
        x=[(str(client.id)) for client in new_clients]
