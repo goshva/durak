@@ -12,12 +12,31 @@
 
   <body>
     <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-      <div class="progress-bar" style="width: 25%">25%</div>
+      <div class="progress-bar" style="width: 25%"></div>
     </div>
     <button id="start_game2" type="button" class="btn btn-primary btn-sm">PLAY2</button>
     <button id="start_game3" type="button" class="btn btn-primary btn-sm">PLAY3</button>
     <button id="start_game4" type="button" class="btn btn-primary btn-sm">PLAY4</button>
     <button id="stop_game" type="button" class="btn btn-primary btn-sm">STOP</button>
+    <style>
+    .itarget{
+ 
+      animation-duration: 15s;
+      animation-name: slidein;
+      animation-iteration-count: 4;
+    }
+    
+    @keyframes slidein {
+      from {
+        
+        width: 0%; 
+      }
+    
+      to {
+        
+        width:100%;
+      }
+    }</style>
     <div  class="left">
       <div class="player2_container">
         <div class="player-title">
