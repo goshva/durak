@@ -48,6 +48,7 @@ async def router(e):
     #print(gamers)
     for g in gamers:
          await socket(g,e)
+    await mg.example_get(e)     
 
 
 async def socket(g,e):
