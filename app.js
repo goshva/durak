@@ -1,5 +1,5 @@
-import {DurakGame,renderDeck,renderPlayerRoles,renderPlayersNames} from '/main.js';
-
+//import {DurakGame,renderDeck,renderPlayerRoles,renderPlayersNames} from '/main.js';
+import {DurakGame,state} from '/main.js';
 let ws;
 
 var id_prosses;
@@ -10,17 +10,19 @@ let rendersock =async (response) => {
     const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes,target] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes,r.target];
 
     // Рисуем карты игроков
-   //renderPlayerCards(players, players[target],passes,target);
-let du=new DurakGame(r,ws);
+  // renderPlayerCards(players, players[target],passes,target);
+//let du=new DurakGame(r,ws);
+//let du=new DurakGame();
+state.r=r;state.ws=ws;
+customElements.define('doom-arhitekt',DurakGame);
+//du.renders(null);
 
-du.renders();
-
-renderDeck(deck);
+//renderDeck(deck);
     // Рисуем роли
- renderPlayerRoles(players, attacker, defender,target)
+ //renderPlayerRoles(players, attacker, defender,target)
 
     // Рисуем имена игроков
- renderPlayersNames();
+ //renderPlayersNames();
 
 
 };
@@ -73,7 +75,7 @@ ws = new WebSocket(`ws://localhost:8765/${path}`);
     }
     
     if((response?.deck_id)&&id_prosses){
-     console.log(response.deck_id)
+     //console.log(response.deck_id)
     await rendersock(response);}
     if(response.connect){let n=Number(response.connect);let buttons=[start_game2,start_game3,start_game4]
     buttons.forEach((i,index)=>{if(index===(n-2)){i.textContent=`PLAYERS${n}`;i.style.color='#3bff67';prBar.classList.remove('itarget')}i.setAttribute('disabled',true)})
