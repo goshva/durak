@@ -15,6 +15,18 @@ export const vebcss=css`
     background-size: cover;
 }
 
+.mod {
+    background-color: rgba(158, 158, 158, 0.75);
+    max-width: 150px;
+    width: 25%;
+    text-align: center;
+    border-radius: 15px;
+    padding: 4px;
+	margin-left: -86px
+}
+.mod:hover{ background-color:#2196F3;}
+
+
 h1, h2, h3, h4, h5, h6, p {
     padding: 0;
     margin: 0;
