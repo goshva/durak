@@ -112,21 +112,21 @@ if(this._myrole==="attacker2"){return await this.matrix_attacker2(j,k)}//ту л
 if(this._myrole==="defender"){return await this.matrix_defender(j,k)}//если покрыл /true/
 
 }
-
+//событие сокета 'взял карты '
 rout(e){
     if(this._myrole==="attacker"){let k=e.players;   return this.newround(k)}
     if(this._myrole==="attacker2"){let k=e.players;return this.newround(k)}
     if(this._myrole==="defender"){let k=e.players;
 for(let val of this.cash_back.back){this.players[this.target].push(val)}
  for(let val of this.cash_back.aktive){this.players[this.target].push(val)}
- this.cash_back.back=[] ;
+ this.cash_back.back=[] ;     //очистка всех временных полей того кто взял карты
  this.cash_back.aktive=[];
  this.cash=[ Array(6),Array(6), Array(6), Array(6)];           
+ this._echo={};      
+  this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>i.style.top='0px');      
         
         
-        
-        
-        return this._round=1}//событие взял карты
+        return this._round +=1}//событие взял карты
     
     }
 newround(k){console.log(`return this.newround(k)`);
@@ -134,20 +134,26 @@ newround(k){console.log(`return this.newround(k)`);
 for(let val of this.cash_back.aktive){this.players[k].push(val)}
 this.cash_back.back=[] ;
 this.cash_back.aktive=[];
-this.cash=[ Array(6),Array(6), Array(6), Array(6)]
-return this._round=1
+this.cash=[ Array(6),Array(6), Array(6), Array(6)];
+this._echo={};
+ this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>i.style.top='0px');
+return this._round +=1;
+//очистка всех временных полей конец раунда
+} //событие пусть берет   
 
-} //сщбытие пусть берет   
+//логика атаки
+async matrix_attacker(j,k){return true}//добавить обработчик соответствия карт attacker
+async matrix_attacker2(j,k){return true}//добавить обработчик соответствия карт attacker2
 
-async matrix_attacker(j,k){return true}
-async matrix_attacker2(j,k){return true}
+
+//логика обороны
 async matrix_defender(j,k){
 let my_card=this.players[this.target][k];
 console.log("3:"+this.cash_back.aktive)
 let a_cards=this.cash_back.aktive;
 
 let result=a_cards.map((i,index)=>{
-    let e1=(my_card[0]===i[0]);
+    let e1=(my_card[0]===i[0]);//проверяем соответствие карт
     let e2=this.ranks.indexOf(my_card[1]);
     let e3=this.ranks.indexOf(i[1]);
     let e4=(my_card[0]===this.active_suit);
@@ -164,14 +170,15 @@ let result=a_cards.map((i,index)=>{
     return 'back'}})
 console.log(result);
 console.log("4:"+this.cash_back.aktive)
-if ((result.includes('back'))){return true;}
+if ((result.includes('back'))){return true;}//если все Ок промис труе отправляем сокет с данными
 else {return false};
-}
+}//если нет карта не двигаетья 
 
 
 
 
 //событие карта на столе
+//обработчик клика attacker attacker2 разделил чтобы не запутаться
 async imgclick(e){if( e.target .style.top ==='-256px')return
 e.preventDefault
 
@@ -215,7 +222,7 @@ async echo(e){ let message=JSON.parse(e.data) ;
 ((message.type==="set")&&(Number(message.taks)===0))?this.rout(message):null;
 }
 
-
+//обработчик клика defender
 async defclick(e){if( e.target .style.top ==='-256px')return
 e.preventDefault
 
@@ -276,21 +283,26 @@ s.push(index)
 return s;
 
 }
-
-
+my_img;//сохранить чтобы не рендерить себя до конца раунда
+set foo(foo){this.my_img=foo;};
+get foo(){return this.my_img;}
     
 // рендер
  render(round){
+	let a=(this._echo?.players!==undefined);
+	console.log(this._echo?.players)
+	console.log(this._round)
 //for(let i=0;i<=this.players_count-1;i++){this.players[i]=this.players[i].filter((x)=>x!==null)}	 
 	 
 	 
  let ix=(this._role[0]==="attacker")?"ваш ход(бито)":(this._role[0]==="attacker2")?"подкидывайте карты(бито)":"вам крыться(беру)";
-let span=html`<span @click=${this.taks} class="badge bg-info text-dark">${ix}</span>`;	
+let span=html`<span @click=${this.taks} class="mod">${ix}</span>`;	
 let n=this.players_count;	
 let left=(n===4)?this.Img(this._pos2):null;
 let right=(n>=3)?this.Img(this._pos3):null;
 let header=this.Img(this._pos1);
-let footer=this.Img(this._pos0);
+let footer=!a?this.Img(this._pos0):this.foo;//сохранить чтобы не рендерить себя до конца раунда
+!a?this.foo=footer:null;
 let section=this.renderDeck();
 
 return html`<div class=super>
@@ -337,7 +349,7 @@ let e=this._echo;
 
 if((e?.players!==null)&&(Number(e?.players)===i)&&(e?.id!==this.id)){
 
-console.log(e);
+//console.log(e);//рендерим только того игрока в зависимости сообщения сокета
 	return this.echorender(e,i)}
 else{
 	
@@ -352,7 +364,7 @@ let img=target?pl[n].map((x,i)=>{
 let [symbol, rank] = [x[0],x[1]];
 let suit = suitsMapping2[symbol];
 let im=`/img/${suit}${rank}.png`; 
-return html`<img @click=${nn?this.imgclick:this.defclick} class="card_img cards_number-6 cards_number-6-hover r" style="" data-play="${n}" data-pos="${i}" src =${im}>`})
+return html`<img @click=${nn?this.imgclick:this.defclick} class="card_img cards_number-6 cards_number-6-hover r" style="top:0px" data-play="${n}" data-pos="${i}" src =${im}>`})
   :pl[i].map((x,i)=>{return html`<img class="card_img cards_number-6" src="/img/card-back.png">`})
 
 
@@ -393,12 +405,12 @@ if(i===this._pos0){return}
     console.log("2+:"+this.cash_back.aktive)
     //console.log(this.cash);
      this.players[j].splice(k,1,null)   
-    let a=p1.map((x,i)=>{if(x!==null) return html`<img class="card_img cards_number-6" src="/img/card-back.png">`;});
+    let a=p1.map((x,i)=>{if(x!==null) return html`<img class="card_img cards_number-6" style="top:0px;" src="/img/card-back.png">`;});
     let c=this.cash[j].map((x,i)=>{if(x!==null){
     let [sym, ra] = [x[0],x[1]];
     let suit = suitsMapping2[sym];
-    let im=`/img/${suit}${ra}.png`; 
-    return html`<img class="card_img cards_number-6 " style="top:-256px;transform:none;${A[i]}"  src =${im}>` }})
+    let img=`/img/${suit}${ra}.png`; 
+    return html`<img class="card_img cards_number-6 " style="top:-256px;transform:none;${A[i]}"  src =${img}>` }})
     
     
 return html`${a}${c}`};
@@ -411,5 +423,5 @@ return html`${a}${c}`};
 
 //customElements.define('doom-arhitekt',DurakGame );
 
-//#python -m http.server   localhost:8080/index.html
+//#python -m http.server   localhost:8000/index.html
 //#python ws.py
