@@ -30,14 +30,14 @@ export const state={};
 
 export class DurakGame extends LitElement{
     static properties = {   //Реактивные свойства 
-        _pos0:{type:Number},//позиции игроков
-		_pos1:{type:Number},
+        _pos0:{type:Number},//позиция юзера игры this.players[this._pos0]
+		_pos1:{type:Number},//позиция соответсвует this.players[this._pos1] и.тд
 		_pos2:{type:Number},
 		_pos3:{type:Number},
 		_echo:{players:null},//сообщения сервера
-		_role:{type:Array},
-		_myrole:'',
-		_round:{type:Number}
+		_role:{type:Array},//роли игроков,если this._pos0,соответсвует this._role[0],(this._pos1 -> this._role[1]).  
+		_myrole:'',            //роль юзера
+		_round:{type:Number}  //счетчик раундов
       };
       static styles =vebcss; 
    constructor(){
@@ -54,8 +54,8 @@ export class DurakGame extends LitElement{
         this.suits =state.r.suits //['Ch', 'B', 'K', 'P']
         this.ranks =state.r.ranks //['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
         this.passes =state.r.passes;
-        this.target =state.r.target ;
-        this.id =state.r.id ;
+        this.target =state.r.target ;//позиция юзера this.players[this.target]
+        this.id =state.r.id ;//ид юзера
         this.deck_id =state.r.deck_id;
         this.imgclick=this.imgclick.bind(this);
         this.echo=this.echo.bind(this);
@@ -63,9 +63,9 @@ export class DurakGame extends LitElement{
         this.rout=this.rout.bind(this);
         this.defclick=this.defclick.bind(this);
         this.cash=[ Array(6),Array(6), Array(6), Array(6)];//карты в игре
-        this.cash_back={back:[],aktive:[]};
+        this.cash_back={back:[],aktive:[]};//временный обьект для обработки карт
         this.back=[];//отыгравшие карты
-        this.ws.onmessage=this.echo;  
+        this.ws.onmessage=this.echo; //обработчик сообщений сервера 
 	    this._role=[null,null,null,null];
         this._myrole='null';
 		this._round=0;
@@ -73,15 +73,19 @@ export class DurakGame extends LitElement{
 	          
 }
 connect() {
-	let index=this.index()
+//вычисляем индех чтобы позиция юзера игры всегда находилась внизу	
+	let index=this.index();
+//вычисляемые позиции игроков	
 let pos0=index.findIndex((i)=>i===0);this._pos0=pos0;//настраиваем Реактивные свойства 
 let pos1=index.findIndex((i)=>i===1);this._pos1=pos1;
 let pos2=index.findIndex((i)=>i===2);this._pos2=pos2;
 let pos3=index.findIndex((i)=>i===3);this._pos3=pos3;
 let a=[pos0,pos1,pos2,pos3]	
 let n=this.players_count;
-	
-this._role[0]=(n!==0)?this.role_play(pos0):null;
+//вычисляемые роли игроков
+console.log(index)	
+console.log(a)
+this._role[0]=(n>=2)?this.role_play(pos0):null;
 this._role[1]=(n>=2)?this.role_play(pos1):null;
 this._role[2]=(n>=3)?this.role_play(pos2):null;
 this._role[3]=(n>=4)?this.role_play(pos3):null;
@@ -244,41 +248,42 @@ if (await task===true){//если карту покрыл
 }
    
 }
-left(left){return html`<div  class="left">
+left(left,sp){return html`<div  class="left">
 <div class="player2_container">
   <div class="player-title">
     <h4 class="text-h4">
-      <span class="player2-name">${this._pos2}</span>
+      <span class="player2-name textB">${this._pos2}</span>
     </h4>
     <h4 class="text-h4">
-      <span class="player2-role">${this._role[2]}</span>
+      <span class="player2-role textA">${this._role[2]}</span>
     </h4>
   </div>
-  <div id="2count" class="player2CardsContainer"><div id=${this.deck_id[this._pos2]}></div>${left}</div>
+  <div id="2count" class="player2CardsContainer">${sp}<div id=${this.deck_id[this._pos2]}>${left}</div></div>
 </div>
 </div>`}
 
-right(right){return html`<div  class="right">
+right(right,sp){return html`<div  class="right">
 <div class="player3_container">
   <div class="player-title">
     <h4 class="text-h4">
-      <span class="player3-name">${this._pos3}</span>
+      <span class="player3-name textB">${this._pos3}</span>
     </h4>
     <h4 class="text-h4">
-      <span class="player3-role">${this._role[3]}</span>
+      <span class="player3-role textA">${this._role[3]}</span>
     </h4>
   </div>
-  <div id="3count" class="player3CardsContainer"><div  id=${this.deck_id[this._pos3]}></div>${right}</div>
+  <div id="3count" class="player3CardsContainer">${sp}<div  id=${this.deck_id[this._pos3]}>${right}</div></div>
 </div>
 </div>`}
 
-
+//вычисляем индех чтобы позиция юзера игры всегда находилась внизу
 index(){
 	let s=[];let n=this.target;
 for(let i=0;i<=this.players_count-1;i++){
 	let index=Math.abs(i-n)
-  index=s.includes(index)?3:index;
-s.push(index)
+  index=s.includes(index)?this.players_count-1:index;
+s.push(index);
+
 }
 return s;
 
@@ -289,55 +294,62 @@ get foo(){return this.my_img;}
     
 // рендер
  render(round){
+	 let self=this;
 	let a=(this._echo?.players!==undefined);
 	console.log(this._echo?.players)
 	console.log(this._round)
-//for(let i=0;i<=this.players_count-1;i++){this.players[i]=this.players[i].filter((x)=>x!==null)}	 
+	console.log(this._role)
+	console.log(this._pos1)
+//for(let i=0;i<=this.players_count-1;i++){this.players[i]=this.players[i].filter((x)=>x!==null)}
+let span_1=html`<span class="mod mod1">я хожу</span>`;
+let span_2=html`<span class="mod mod1">я кроюсь</span>`;	 
+function span_atr(x){let a=(x==="attacker")?span_1:(x==="defender")?span_2:null;return a};	 
 	 
-	 
- let ix=(this._role[0]==="attacker")?"ваш ход(бито)":(this._role[0]==="attacker2")?"подкидывайте карты(бито)":"вам крыться(беру)";
-let span=html`<span @click=${this.taks} class="mod">${ix}</span>`;	
+ let ix_text=(this._role[0]==="attacker")?"ваш ход":(this._role[0]==="attacker2")?"подкидывай карты":"вам крыться";
+ let iy_text=(this._role[0]==="attacker")?"бито":(this._role[0]==="attacker2")?"бито":"беру";
+let span_0=html`<span @click=${this.taks} class="mod">${a?iy_text:ix_text}</span>`;
+	
 let n=this.players_count;	
-let left=(n===4)?this.Img(this._pos2):null;
-let right=(n>=3)?this.Img(this._pos3):null;
+let left=(n>=3)?this.Img(this._pos2):null;
+let right=(n===4)?this.Img(this._pos3):null;
 let header=this.Img(this._pos1);
 let footer=!a?this.Img(this._pos0):this.foo;//сохранить чтобы не рендерить себя до конца раунда
 !a?this.foo=footer:null;
 let section=this.renderDeck();
 
 return html`<div class=super>
-${n===4?this.left(left):null}
- ${n>=3?this.right(right):null}
+${n>=3?this.left(left,span_atr(this._role[2])):null}
+ ${n===4?this.right(right,span_atr(this._role[3])):null}
  
 <div class="field">
 <header  class="header">
-  <div class="player1_container">
-    <div id="1count" class="player1CardsContainer"><div  id=${this.deck_id[this._pos1]}></div>${header}</div>
-    <h4 class="text-h4">
-      <span class="player1-role">${this._role[1]}</span>
-    </h4>
-    <h4 class="text-h4">
-      <span class="player1-name">${this._pos1}</span>
-    </h4>
-  </div>
+<div class="player1_container">
+<div id="1count" class="player1CardsContainer">${span_atr.call(this,this._role[1])}<div  id=${this.deck_id[this._pos1]}>${header}</div></div>
+<h4 class="text-h4">
+<span class="player1-role textA">${this._role[1]}</span>
+</h4>
+<h4 class="text-h4">
+<span class="player1-name textB">${this._pos1}</span>
+</h4>
+</div>
 </header>
 <section class="content">
-  <div class="deck_flex">
-   ${section??html`<img src="img/card-back.png" alt="Card back" class="card_img" />`}
-  </div>
-  <div class="table_grid"></div>
-  <div class="deck_flex"></div>
+<div class="deck_flex">
+${section??html`<img src="img/card-back.png" alt="Card back" class="card_img" />`}
+</div>
+<div class="table_grid"></div>
+<div class="deck_flex"></div>
 </section>
 <footer  class="footer">
-  <div class="player0_container">
-    <h4 class="text-h4">
-      <span class="text-dark player0-name">${this._pos0}</span>
-    </h4>
-    <h4 class="text-h4">
-      <span class=" player0-role">${this._role[0]}</span>
-    </h4>
-    <div id="0count" class="player0CardsContainer"><div  id=${this.deck_id[this._pos0]}>${span}</div>${footer}</div>
-  </div>
+<div class="player0_container">
+<h4 class="text-h4">
+<span class="text-dark player0-name textB">${this._pos0}</span>
+</h4>
+<h4 class="text-h4">
+<span class=" player0-role textA">${this._role[0]}</span>
+</h4>
+<div id="0count" class="player0CardsContainer">${span_0}<div  id=${this.deck_id[this._pos0]}>${footer}</div></div>
+</div>
 </footer>
 </div></div>`
 
