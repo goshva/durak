@@ -5,14 +5,7 @@ export const vebcss=css`
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-}
 
-.super {
-    margin: 0;
-    height: 100vh;
-    background-image: url(/img/bcg-green.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .mod {
@@ -24,8 +17,48 @@ export const vebcss=css`
     padding: 4px;
 	margin-left: -86px
 }
+.mod1{
+    position: relative;
+    display: block;
+    transform: rotatex(177deg);
+}
+
+.textB {
+	display: inline-block;
+    width: 28px;
+    height: 28px;
+    right: auto;
+    top: auto;
+    color: red;
+    position: relative;
+    border-radius: 50%;
+    background-color: white;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+
+.textA { color: #795548;
+    position: relative;
+    border-radius: 5%;
+    background-color: white;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+
+
+
 .mod:hover{ background-color:#2196F3;}
 
+
+.super {
+    margin: 0;
+    height: 100vh;
+    background-image: url(/img/bcg-green.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 h1, h2, h3, h4, h5, h6, p {
     padding: 0;
