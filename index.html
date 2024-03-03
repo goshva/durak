@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width">
 
   <head>
     <title>WebSocket Test</title>
@@ -14,7 +15,7 @@
   </head>
 
   <body>
-    <dialog open class="players_number_dialogue">
+    <dialog class="players_number_dialogue">
       <div class="logo">
         <img src="./img/durak_logo.png" alt="Durak logo" class="logo_img">
       </div>
@@ -31,29 +32,30 @@
       </div>
     </dialog>
     <div class="left">
+      <div class="spare"></div>
       <div class="player2_container">
-        <div class="player-title">
-          <h4 class="text-h4">
-            <span class="badge bg-light text-dark player2-name"></span>
-          </h4>
-          <h4 class="text-h4">
-            <span class="badge bg-info text-dark player2-role"></span>
-          </h4>
+        <div class="player2CardsContainer">
+          <div class="player-title player-title-2">
+            <h4 class="text-h4">
+              <span class="badge bg-light text-dark player2-name"></span>
+            </h4>
+            <div class="player2-role"></div>
+          </div>
         </div>
-        <div class="player2CardsContainer"></div>
       </div>
     </div>
     <div class="right">
+      <div class="spare"></div>
       <div class="player3_container">
-        <div class="player-title">
-          <h4 class="text-h4">
-            <span class="badge bg-light text-dark player3-name"></span>
-          </h4>
-          <h4 class="text-h4">
-            <span class="badge bg-info text-dark player3-role"></span>
-          </h4>
-        </div>
-        <div class="player3CardsContainer"></div>
+        
+          <div class="player3CardsContainer">
+            <div class="player-title player-title-3">
+              <h4 class="text-h4">
+                <span class="badge bg-light text-dark player3-name"></span>
+              </h4>
+              <div class="player3-role"></div>
+            </div>
+          </div>       
       </div>
     </div>
     <div class="field">
@@ -61,12 +63,14 @@
         <button class="deal_cards">Раздать карты</button>
         <div class="player1_container">
           <div class="player1CardsContainer"></div>
-          <h4 class="text-h4">
-            <span class="badge bg-info text-dark player1-role"></span>
-          </h4>
-          <h4 class="text-h4">
-            <span class="badge bg-light text-dark player1-name"></span>
-          </h4>
+          <div class="player-title-1">
+            <h4 class="text-h4">
+              <span class="badge bg-info text-dark player1-role"></span>
+            </h4>
+            <h4 class="text-h4">
+              <span class="badge bg-light text-dark player1-name"></span>
+            </h4>
+          </div>
         </div>
       </header>
       <section class="content">
@@ -80,12 +84,14 @@
       </section>
       <footer class="footer">
         <div class="player0_container">
-          <h4 class="text-h4">
-            <span class="badge bg-light player0-name text-dark"></span>
-          </h4>
-          <h4 class="text-h4">
-            <span class="badge bg-info text-dark player0-role"></span>
-          </h4>
+          <div class="player-title-0">
+            <h4 class="text-h4">
+              <span class="badge bg-light player0-name text-dark"></span>
+            </h4>
+            <h4 class="text-h4">
+              <span class="badge bg-info text-dark player0-role"></span>
+            </h4>
+          </div>
           <div class="player0CardsContainer"></div>
         </div>
       </footer>

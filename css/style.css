@@ -1,17 +1,20 @@
-html {
-   
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
-body {
-    margin: 0;
-    height: 100vh;
-    background-image: url(/img/bcg-green.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+:root {
+    --app-height: 100%;
+ }
+ 
+ html,
+ body {
+     padding: 0;
+     margin: 0;
+     overflow: hidden;
+     width: 100vw;
+     height: 100vh;
+     height: var(--app-height);
+     overflow-x: hidden;
+     background-image: url(/img/bcg-green.jpg);
+     background-repeat: no-repeat;
+     background-size: cover;
+ }
 
 h1, h2, h3, h4, h5, h6, p {
     padding: 0;
@@ -33,7 +36,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .header {
-    min-height: 100px;
+    padding-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,51 +65,80 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .left {
-    min-width: 220px;
+    min-width: 150px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.spare {
+    height: 300px;
 }
 
 .right {
-    min-width: 220px;
+    flex-direction: column;
+    min-width: 150px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
-.player-title {
-    margin-top: -80px;
-    margin-bottom: 80px;
+.player-title-0 {
+    margin-bottom: 20px;
+}
+
+
+.player-title-2, .player-title-3 {
+    position: absolute;
+    top: 70px;
+    right: -100px;
+    transform: rotate(90deg);
+}
+
+.player3_container, .player2_container {
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
 }
 
 .player3CardsContainer {
     position: relative;
-    width: 300px;
-    height: 120px;
-    transform: rotate(-90deg)
+    width: 250px;
+    height: 150px;
+    transform: rotate(-90deg);
+    padding: auto 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .player2CardsContainer {
     position: relative;
-    width: 300px;
-    height: 120px;
-    transform: rotate(90deg)
+    width: 250px;
+    height: 150px;
+    padding: auto 0;
+    transform: rotate(-90deg);
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .player1CardsContainer {
-    margin: 20px 0;
     position: relative;
-    width: 300px;
-    height: 120px;
+    width: 250px;
+    height: 110px;
     transform: scaleY(-1);
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .player0CardsContainer {
-    margin: 20px 0;
     position: relative;
-    width: 300px;
-    height: 120px;
+    width: 400px;
+    height: 170px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .player1 {
@@ -114,17 +146,11 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .content {
-    height: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 20px;
-    flex-grow: 1;
     flex: 1 0 auto;
     position: relative;
-}
-
-.card_table {
 }
 
 .deck_card {
@@ -132,19 +158,17 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .deck_flex {
-    position: absolute;
-    width: 200px;
+    margin-top: 100px;
+    width: 70px;
     display: flex;
     position: relative;
-    justify-content: center;
     align-items: center;
 }
 
+
 .table_grid {
     padding: 0 20px;
-    display: grid;
-    grid-template-columns: repeat(5, 65px);
-    justify-items: center;
+
 }
 
 .left {
@@ -165,109 +189,8 @@ h1, h2, h3, h4, h5, h6, p {
     justify-content: center;
     align-items: center;
     flex: 0 0 auto;
+    padding-bottom: 20px;
 }
-
-.card_img {
-    width: 57px;
-    height: 89px;
-    border-radius: 7px;
-    transition: transform 250ms;
-}
-
-.cards_number-lastCard {
-    transform: rotate(-90deg);
-    position: absolute;
-    right: 25%;
-    z-index: -2;
-}
-
-.cards_number-6, .cards_number-5, .cards_number-4, .cards_number-3, .cards_number-2, .cards_number-1 {
-    position: absolute;
-    cursor: pointer;
-}
-
-.cards_number-6:nth-of-type(1) {
-    transform: rotate(-35deg);
-    top: 25px;
-    left: 50px;
-}
-
-.cards_number-6:nth-of-type(2) {
-    transform: rotate(-20deg);
-    top: 10px;
-    left: 80px;
-}
-
-.cards_number-6:nth-of-type(3) {
-    transform: rotate(-5deg);
-    left: 110px;
-}
-
-.cards_number-6:nth-of-type(4) {
-    transform: rotate(5deg);
-    right: 110px;
-}
-
-.cards_number-6:nth-of-type(5) {
-    transform: rotate(20deg);
-    top: 10px;
-    right: 80px;
-}
-
-.cards_number-6:nth-of-type(6) {
-    transform: rotate(35deg);
-    top: 25px;
-    right: 50px;
-}
-
-.cards_number-6-hover:hover {
-    box-shadow: 0px 0px 10px yellow;
-}
-
-.cards_number-6-hover:nth-of-type(1):hover {
-    transform: rotate(-35deg) translateY(-20px);
-}
-
-.cards_number-6-hover:nth-of-type(2):hover {
-    transform: rotate(-20deg) translateY(-20px);
-}
-
-.cards_number-6-hover:nth-of-type(3):hover {
-    transform: rotate(-5deg) translateY(-20px);;
-}
-
-.cards_number-6-hover:nth-of-type(4):hover {
-    transform: rotate(5deg) translateY(-20px);
-}
-
-.cards_number-6-hover:nth-of-type(5):hover {
-    transform: rotate(20deg) translateY(-20px);
-}
-
-.cards_number-6-hover:nth-of-type(6):hover {
-    transform: rotate(35deg) translateY(-20px);
-}
-
-/* .cards_number-5:nth-of-type(1) {
-    transform: rotate(-30deg);
-}
-
-.cards_number-5:nth-of-type(2) {
-    transform: rotate(-15deg);
-}
-
-.cards_number-5:nth-of-type(3) {
-    top: 35px;
-    left: 200px;
-}
-
-.cards_number-5:nth-of-type(4) {
-    transform: rotate(15deg);
-}
-
-.cards_number-5:nth-of-type(5) {
-    transform: rotate(30deg);
-} */
 
 .move-to-0 {
     transform: translateX(20px)
@@ -279,22 +202,25 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .logo {
-    margin-bottom: 200px;
+    margin-bottom: 100px;
     text-align: center;
 }
 
 .players_number_dialogue {
+    top: calc(var(--app-height) / 2 - 200px);
     background-color: transparent;
     border: none;
-    top: 100px;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .players_number_button {
     background-color: rgba(255, 255, 255, 0.3);
     border: none;
-    min-width: 200px;
-    min-height: 100px;
+    min-width: 100px;
+    min-height: 50px;
     cursor: pointer;
     padding-top: 40px;
 }
@@ -307,4 +233,113 @@ h1, h2, h3, h4, h5, h6, p {
     margin-bottom: 0;
 }
 
-  
+.player3-role, .player2-role, .player1-role, .player0-role {
+    text-align: center;
+}
+
+.icon {
+    width: 30px;
+    fill: yellowgreen;
+}
+
+.card_img {
+    bottom: 0;
+    width: 110px;
+    border-radius: 7px;
+    transition: transform 250ms;
+}
+
+.card_back {
+    width: 60px;
+}
+
+
+
+.lastCard {
+    transform: rotate(-90deg);
+    position: absolute;
+    left: 30px;
+    bottom: -50px;
+    width: 60px;
+}
+
+.cards_number-hover:hover {
+    box-shadow: 0px 0px 10px yellow;
+    transform: translateY(-20px);
+    cursor: pointer;
+}
+
+.player-cards {
+    position: absolute;
+}
+
+@media (min-width: 576px) {
+    .players_number_button {
+        min-width: 150px;
+        min-height: 100px;
+    }
+}
+
+@media (min-width: 768px) {
+    .card_img {
+        width: 90px;
+    }
+    .card_back {
+        width: 80px;
+    }
+    .player0CardsContainer {
+        width: 400px
+    }
+    .player1CardsContainer, .player2CardsContainer, .player3CardsContainer {
+        width: 300px;
+    }
+    .players_number_button {
+        min-width: 200px;
+        min-height: 100px;
+    }
+    .spare {
+        display: none;
+    }
+
+    .left, .right {
+        width: 220px;
+        justify-content: center;
+
+    }
+
+    .player2_container, .player3_container {
+        justify-content: center;
+        align-items: center;
+        width: 220px;
+        height: 300px;
+    }
+    .player2CardsContainer, .player3CardsContainer {
+        height: 120px;
+    }
+    .player1CardsContainer {
+        height: 135px;
+    }
+    .player0CardsContainer {
+        height: 150px;
+    }
+    .player-title-2, .player-title-3 {
+        position: absolute;
+        top: 25px;
+        right: -120px;
+        transform: rotate(90deg);
+    }
+    .player-title-0, .player-title-1 {
+        margin-bottom: 0;
+    }
+    
+    .content {
+        align-items: center;
+    }
+    .deck_flex {
+        margin-top: 0;
+    }
+    .lastCard {
+        bottom: -90px;
+    }
+}
+

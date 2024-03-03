@@ -1,6 +1,12 @@
 import onChange from './node_modules/on-change/index.js';
 import render from './view.js';
 
+const appHeight = () => {
+  const doc = document.documentElement
+  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+}
+window.addEventListener('resize', appHeight)
+appHeight();
 
 const app = () => {
     const state = {
@@ -38,10 +44,11 @@ const app = () => {
                     watchedState.players_count = players_count;
                 }))
                 .then(() => {
-                    dialogue.close();
+                    dialogue.style.display="none";
                     const dealCardsButton = document.querySelector('.deal_cards');
                     dealCardsButton.style.display = 'block';
                     dealCardsButton.addEventListener('click', () => {
+                      console.log(watchedState.round)
                       watchedState.round = false });
                     watchedState.init = true;
                 })
