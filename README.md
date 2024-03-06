@@ -12,8 +12,7 @@ https://www.python.org/downloads/
 
 Зайти в папку проекта в cmd или power shell.
 
-Установить пакеты:
-
+Установить пакеты.
 pip install asyncio
 pip install websockets
 python -m pip install motor
