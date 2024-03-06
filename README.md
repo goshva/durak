@@ -5,6 +5,7 @@
 https://learn.microsoft.com/ru-ru/windows/wsl/install
 
 Если не установлен Python установить.
+
 https://www.python.org/downloads/
 
  Активировать venv например  python -m venv <directory>.
@@ -13,9 +14,13 @@ https://www.python.org/downloads/
 Зайти в папку проекта в cmd или power shell.
 
 Установить пакеты.
+
 pip install asyncio
+
 pip install websockets
+
 python -m pip install motor
+
 pip install beanie
 
 
@@ -24,15 +29,19 @@ https://www.mongodb.com/docs/compass/master/install
 Будет установлена б.д с графическим интерфейсом на 500 мб
 (mongodb://localhost:27017)
 
-Далее в командной строке своего проекта запускаете: 
+Далее в командной строке своего проекта запускаете:
+
 python ws.py
 
 Далее откройте еще один терминал и в командной строке своего проекта запускаете:
+
 python -m http.server 
 
 Это запустит локальный сервер работает на порту: localhost:8000 
 Откройте в браузере одну или несколько вкладок.
+
  localhost:8000/index.html
+ 
  нажать на кнопку Play2 или Play3 или Play4  на другой вкладке тоже Play2 (3,4)
 запуститься игра.
 Одновременно можно запустить несколько игр. 
@@ -40,10 +49,12 @@ python -m http.server
 Разработка фронтенд.
 frontend
 Установить Node.js
+
 https://nodejs.org/en/download/
 
 
-Установить Lit 
+Установить Lit
+
 https://lit.dev/learn/#filter=tutorial
 
 Скачать стартовый проект :
@@ -54,7 +65,9 @@ https://github.com/lit/lit-element-starter-js/archive/main.zip
 C:\Users\User\nginx-1.23.3\durack\durak\lit-element-starter-js-main\lit-element-starter-js-main
 Установить зависимости в cmd:
 C:\Users\User\nginx-1.23.3\durack\durak\lit-element-starter-js-main\lit-element-starter-js-main
+
 npm install
+
 или npm i
    
   запустить девсервер:
