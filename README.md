@@ -62,8 +62,11 @@ https://github.com/lit/lit-element-starter-js/archive/main.zip
 
 Распоковать и положить в папку нашего проекта
 У меня выглядит вот так:
+
 C:\Users\User\nginx-1.23.3\durack\durak\lit-element-starter-js-main\lit-element-starter-js-main
+
 Установить зависимости в cmd:
+
 C:\Users\User\nginx-1.23.3\durack\durak\lit-element-starter-js-main\lit-element-starter-js-main
 
 npm install
@@ -76,7 +79,11 @@ npm install
  Доступен по адресу:  
    
     Local:    http://localhost:8000/
+    
   Network:  http://172.20.144.1:8000/
   
-  Далее создать папку под названием frontend в lit-element-starter-js-main\lit-element-starter-js-main
+  Далее создать папку под названием frontend в
+  
+  lit-element-starter-js-main\lit-element-starter-js-main
+  
   и перенести все фронтенд файлы туда .
