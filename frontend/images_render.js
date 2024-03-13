@@ -14,7 +14,7 @@ if((e?.players!==null)&&(Number(e?.players)===i)&&(e?.id!==this.id)){
 	return this.echorender(e,i)}
 else{
 	
-let nn=(this._myrole==="attacker");
+let nn=(this._myrole==="attacker"||this._myrole==="attacker2");
 let n=this.target; 
 let pl=this.players.filter((x)=>x!==null);   
 let t=pl[n] ;
