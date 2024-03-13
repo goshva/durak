@@ -40,7 +40,9 @@ const passesMapping = {
 //const A=["left:-9px","left:56px","left:121px","left:186px","left:251px"];
 const A=["-56px","-9px","56px","121px","186px","251px"];
 //var Av=[];
-
+const wm1 = new Map();
+const wm2 = new Map();
+const wm3 = new Map();
 export const state={};
 
 export class DurakGame extends LitElement{
@@ -49,7 +51,7 @@ export class DurakGame extends LitElement{
 		_pos1:{type:Number},//позиция соответсвует this.players[this._pos1] и.тд
 		_pos2:{type:Number},
 		_pos3:{type:Number},
-		_echo:{players:null},//сообщения сервера
+		_echo:{},//сообщения сервера
 		_role:{type:Array},//роли игроков,если this._pos0,соответсвует this._role[0],(this._pos1 -> this._role[1]).  
 		_myrole:'',            //роль юзера
 		_round:{type:Number}  //счетчик раундов
@@ -72,22 +74,24 @@ export class DurakGame extends LitElement{
         this.target =state.r.target ;//позиция юзера this.players[this.target]
         this.id =state.r.id ;//ид юзера
         this.deck_id =state.r.deck_id;
+		this.static_role=state.r.pl_roles;
         this.imgclick=this.imgclick.bind(this);
         this.echo=this.echo.bind(this);
         this.taks=this.taks.bind(this);
         this.rout=this.rout.bind(this);
         this.defclick=this.defclick.bind(this);
-        this.cash=[ Array(6),Array(6), Array(6), Array(6)];//карты в игре
+        this.cash=[[],[],[],[]];//карты в игре
         this.cash_back={back:[],aktive:[]};//временный обьект для обработки карт
         this.back=[];//отыгравшие карты
         this.ws.onmessage=this.echo; //обработчик сообщений сервера 
-	    this._role=[null,null,null,null];
+	    this._role=[];
         this._myrole='null';
 		this._round=0;
 	   this.connect();
+	  
 	          
 }
-connect() {
+connect(e) {
 //вычисляем индех чтобы позиция юзера игры всегда находилась внизу	
 	let index=this.index();
 //вычисляемые позиции игроков	
@@ -100,20 +104,23 @@ let n=this.players_count;
 //вычисляемые роли игроков
 //console.log(index)	
 //console.log(a)
-this._role[0]=(n>=2)?this.role_play(pos0):null;
-this._role[1]=(n>=2)?this.role_play(pos1):null;
-this._role[2]=(n>=3)?this.role_play(pos2):null;
-this._role[3]=(n>=4)?this.role_play(pos3):null;
+this._role[0]=(n>=2)?this.static_role[pos0]:null;
+this._role[1]=(n>=2)?this.static_role[pos1]:null;
+this._role[2]=(n>=3)?this.static_role[pos2]:null;
+this._role[3]=(n>=4)?this.static_role[pos3]:null;
 //this._myrole=this.role_play[Number(this.target)];
+this._role=this._role.filter((w) => w!==null);
 this._myrole=this._role[0];
-
+if(this.players_count===2 && e){this._role.reverse()}
 	 }
 
+get Wm1(){return wm1}
+get Wm2(){return wm2}
+get Wm3(){return wm3}
 
 
 
-
- role_play(n){
+ /* role_play(n){
     //let n=this.target;
     let na=this.attacker;
     let np=this.players;
@@ -123,7 +130,7 @@ this._myrole=this._role[0];
 if(a){  return "attacker"}
 if(b){return "defender"}
 else{ return "attacker2"} 
-}
+} */
 
 async task(j,k){
 if(this._myrole==="attacker"){return await this.matrix_attacker(j,k)}//ту ли карту дал
@@ -133,29 +140,55 @@ if(this._myrole==="defender"){return await this.matrix_defender(j,k)}//если 
 }
 //событие сокета 'взял карты '
 rout(e){
-    if(this._myrole==="attacker"){let k=e.players;   return this.newround(k)}
-    if(this._myrole==="attacker2"){let k=e.players;return this.newround(k)}
-    if(this._myrole==="defender"){let k=e.players;
-for(let val of this.cash_back.back){this.players[this.target].push(val.one),this.players[this.target].push(val.two)}
- for(let val of this.cash_back.aktive){this.players[this.target].push(val)}
- this.cash_back.back=[] ;     //очистка всех временных полей того кто взял карты
+    if(e.type==="round-count"){return this.newround(k)}//не настроено
+    if(e.type==="round-end"){return this.newround(k)}//не настроено
+    if(e.type==="round-taks"){
+this.cash_back={back:[],aktive:[]}; ;     //очистка всех временных полей того кто взял карты
  this.cash_back.aktive=[];
- this.cash=[ Array(6),Array(6), Array(6), Array(6)];           
- this._echo={};      
-  this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>i.style.top='0px');      
+this.Wm1.clear();
+this.Wm2.clear();
+this.Wm3.clear();
+        this.deck =e.deck ;
+        this.players = e.players;
+        this.static_role =e.roles 
+        this.back =e.deck_back;
+		this.cash=e.cach;
+        this.passes=0;
+
+
+ 
+  this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>{i.style.top='0px';i.removeAttribute("style")});      
         
         
-        return this._round +=1}//событие взял карты
+      //this._round +=1 ;
+	  this._echo=e;
+	  this._round +=1 ;
+if(e.bito===true && this.players_count===2){this._role.reverse();
+if(this._myrole==="defender"){this._myrole="attacker"}
+else{this._myrole="defender"}
+console.log(this._myrole)
+}	  
+	  
+	  
+	  }//событие взял карты
     
     }
-newround(k){console.log(`return this.newround(k)`);
-    for(let val of this.cash_back.back){this.players[k].push(val.one),this.players[k].push(val.two)}
-for(let val of this.cash_back.aktive){this.players[k].push(val)}
-this.cash_back.back=[] ;
+newround(e){console.log(`return this.newround(k)`);
+   // for(let val of this.cash_back.back){this.players[k].push(val.one),this.players[k].push(val.two)}
+//for(let val of this.cash_back.aktive){this.players[k].push(val)}
+this.cash_back={back:[],aktive:[]};
 this.cash_back.aktive=[];
-this.cash=[ Array(6),Array(6), Array(6), Array(6)];
-this._echo={};
- this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>i.style.top='0px');
+        this.deck =e.deck ;
+        this.players = e.players;
+        this.suits =state.r.suits 
+        this.static_role =e.roles 
+        this.back =e.deck_back;
+		this.cash=e.cach;
+//this._echo={};
+this.Wm1.clear();
+this.Wm2.clear();
+this.Wm3.clear(); 
+ this.shadowRoot.querySelectorAll('img').forEach((i)=>i.remove());
 return this._round +=1;
 //очистка всех временных полей конец раунда
 } //событие пусть берет   
@@ -167,8 +200,10 @@ async matrix_attacker2(j,k){return true}//добавить обработчик 
 
 //логика обороны
 async matrix_defender(j,k){
-let my_card=this.players[this.target][k];
-console.log("3:"+this.cash_back.aktive)
+let my_card=this.players[j][k];
+console.log("this.cash_back.aktive 3:"+this.cash_back.aktive)
+console.log("my_card 3:"+my_card)
+console.log("this.active_suit3:"+this.active_suit)
 let a_cards=this.cash_back.aktive;
 
 let result=a_cards.map((i,index)=>{
@@ -197,14 +232,17 @@ else {return false};
 
 
 //событие карта на столе
-//обработчик клика attacker attacker2 разделил чтобы не запутаться
+//обработчик клика attacker attacker2 images_render.js
 async imgclick(e){if( e.target .style.top ==='-256px')return
 e.preventDefault
 //Av.push(e.target);
+
 this.passes+=1;
 let d= e.target.dataset;
 let  j=Number(d.play) 
 let k=Number(d.pos)
+console.log(e)
+
 let task=this.task(j,k)
 if (await task===true){//если карту покрыл
     let xx=(this._myrole==='defender')  
@@ -212,22 +250,56 @@ if (await task===true){//если карту покрыл
    e.target .style.top = '-256px';
    e.target.classList.remove(`cards_number-${6}-hover`);
    e.target.style.transform = 'none';
-  this.cash[j][k]=this.players[j][k];
+   e.target.style.zIndex = -1;
+   let u=this.players[j][k];
+let lft=e.target.style.left;
+this.Wm1.set(u,lft);
+//console.log(wm1.get(this.players[j][k]));
+   
+  this.cash[j].push(this.players[j][k]);
+  console.log(this.cash[j])
   xx?this.cash_back.back.push(this.players[j][k]):this.cash_back.aktive.push(this.players[j][k])//ggg
   this.players[j].splice(k,1,null)
  
 
-   this.w_m={type:"set","players":d.play,"pos":d.pos,"id":this.id,"name":this.name,"deck_id":this.deck_id,"cach":this.cash,"role":this._myrole,"passes":this.passes};//отправка рендера всем
+   this.w_m={type:"set","players":d.play,"pos":d.pos,"id":this.id,"name":this.name,"deck_id":this.deck_id,"role":this._myrole,"passes":this.passes,"roles":this._role};//отправка рендера всем
 }
 
 }
 
 taks(){//console.log(`taks()`)
-let a=(this._myrole==='attacker')?0:1;
+if(this.players_count===2){
 
-    this.w_m={type:"set","taks":`${a}`,"players":this.target,"id":this.id,"name":this.name,"deck_id":this.deck_id,"role":this._myrole};
+let a=(this._myrole==='attacker')?this.target:this._pos1;
+
+this.w_m={type:"set","taks":`${a}`,"players":this.target,"id":this.id,"name":this.name,"deck_id":this.deck_id,"role":this._myrole,"roles":this._role};}
+else{
+let a=(this._myrole==='attacker' || this._myrole==='attacker2' )?this.target:1;//this.sorted_pos();
+
+this.w_m={type:"set","taks":`${a}`,"players":this.target,"id":this.id,"name":this.name,"deck_id":this.deck_id,"role":this._myrole,"roles":this._role};}
 
 }
+
+revers_role(){
+if(this.players_count===2){this._role.reverse()}else{
+let e=0;
+let len=(this._role.length)-1	
+this._role.forEach((el,i,a)=>{
+if (el==="attacker"&& a[i+1]==='defender'){a.splice(i, 1,"defender");a.splice(i+1, 1,"attacker")}
+if (el==="attacker"&& a[i-1]==='defender'){a.splice(i, 1,"defender");}	
+ })	
+}}
+
+sorted_pos(){
+let pos=[this._pos0,this._pos1,this._pos2,this._pos3]
+let e=0;	
+for(let i in this._role){
+e +=1;	
+if (i==="attacker"){ break;
+	return pos[e]
+}	
+ }	
+  }
 
 
 
@@ -237,30 +309,40 @@ set w_m(send){
 }
 //обработчик сообщения сервера
 async echo(e){ let message=JSON.parse(e.data) ;
-(message.type==="set"&&!message.taks&&(message.id!==this.id))?this._echo=message:null;//все сообщения кроме взял
+(message.type==="set"&&!message.taks&&(message.id!==this.id))?this._echo=message:null;//все сообщения кроме взял карты
 ((message.type==="set")&&(Number(message.taks)===1))?this.rout(message):null;//событие взял или покрыл
 ((message.type==="set")&&(Number(message.taks)===0))?this.rout(message):null;
+(message.type==="round-taks")?this.rout(message):null;
 }
 
-//обработчик клика defender
+//обработчик клика defender images_render.js
 async defclick(e){if( e.target .style.top ==='-256px')return
 e.preventDefault
 //Av.push(e.target);
 let d= e.target.dataset;
 let  j=Number(d.play) 
 let k=Number(d.pos)
+console.log(e)
+
 let task=this.task(j,k)
 if (await task===true){//если карту покрыл
+let broken_card=(this.cash_back.back[this.cash_back.back.length-1]).one//битая карта
+let atack_card=(this.cash_back.back[this.cash_back.back.length-1]).two;//atak карта
    this.passes?passesMapping[this.passes](e.target):'';
    e.target .style.top = '-256px';
    e.target.classList.remove(`cards_number-${6}-hover`);
    e.target.style.transform = 'none';
-  this.cash[j][k]=this.players[j][k];
+   
+   e.target.style.left=this.Wm3.get(broken_card)
+  
+   
+  this.cash[j].push(this.players[j][k]);
+  
   //this.cash_back.back.push(this.players[j][k])
   this.players[j].splice(k,1,null)
  
 
-   this.w_m={type:"set","players":d.play,"pos":d.pos,"id":this.id,"name":this.name,"deck_id":this.deck_id,"cach":this.cash,"role":this._myrole,"passes":this.passes};//отправка рендера всем
+   this.w_m={type:"set","players":d.play,"pos":d.pos,"id":this.id,"name":this.name,"deck_id":this.deck_id,"role":this._myrole,"passes":this.passes,broken_card:broken_card,"roles":this._role};//отправка рендера всем
 }
    
 }
@@ -311,8 +393,9 @@ get foo(){return this.my_img;}
 // рендер
  render(round){
 /* (Av.length!==0)?Av.forEach((e)=>{e.style.top='0px'}):null;Av=[]; */	 
-	 let self=this;
-	let a=(this._echo?.players!==undefined);
+	let a=(this.passes===0);
+	let eho=(this._echo?.type==="round-taks");
+	
 	//console.log(this._echo?.players)
 	//console.log(this._round)
 	//console.log(this._role)
@@ -324,14 +407,15 @@ function span_atr(x){let a=(x==="attacker")?span_1:(x==="defender")?span_2:null;
 	 
  let ix_text=(this._role[0]==="attacker")?"ваш ход":(this._role[0]==="attacker2")?"подкидывай карты":"вам крыться";
  let iy_text=(this._role[0]==="attacker")?"бито":(this._role[0]==="attacker2")?"бито":"беру";
-let span_0=html`<span @click=${this.taks} class="mod">${a?iy_text:ix_text}</span>`;
+let span_0=html`<span @click=${this.taks} class="mod">${!a?iy_text:ix_text}</span>`;
 	
 let n=this.players_count;	
 let left=(n>=3)?this.Img(this._pos2):null;
 let right=(n===4)?this.Img(this._pos3):null;
 let header=this.Img(this._pos1);
-let footer=!a?this.Img(this._pos0):this.foo;//сохранить чтобы не рендерить себя до конца раунда
-!a?this.foo=footer:null;
+let footer=a||eho?this.Img(this._pos0):this.foo;//сохранить чтобы не рендерить себя до конца раунда
+a||eho?this.foo=footer:null;
+//let footer=this.Img(this._pos0)
 //let footer=this.Img(this._pos0)
 let section=this.renderDeck();
 
@@ -380,7 +464,7 @@ return images_render.call(this,i);
 }
 renderDeck(){
 	let deck=this.deck;
-    let t = deck[deck.length - 1];
+    let t = deck[0];
     const [symbol, rank] = [t[0],t[1]];
     const suit = suitsMapping2[symbol];
     let im=`./img/${suit}${rank}.png`;
