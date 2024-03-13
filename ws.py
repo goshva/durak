@@ -48,13 +48,14 @@ async def router(e):
     #print(gamers)
     for g in gamers:
          await socket(g,e)
-    await mg.example_get(e)     
+    #await mg.example_get(e)     
 
 
 async def socket(g,e):
     for client in clients:
          if g==str(client.id):
-                await client.send(json.dumps(e))    
+                await client.send(json.dumps(e))
+    #await mg.example_get(e)                
            
 async def socketjson(g,cl):
     s= cl   
@@ -74,7 +75,7 @@ async def cln(rout,cl,clients0):
      m=[cl]
      i=1
      for client in s:
-          await client.send(json.dumps({"connect":rout}))
+          await client.send(json.dumps({"connect":rout}))#коннектим игроков
           m.append(client)
           clients.add(client)
           clients0.discard(client)
@@ -97,7 +98,7 @@ async def broadcast(client,message,clients0,rout):
         et=e.get("type")
         #en=e.get("n")
         if et=="start" and (i>1 and i>=rout):#если есть игроки и кол-во больш или равно роуту/2 /3 /4
-            await client.send(json.dumps({"connect":rout}))
+            await client.send(json.dumps({"connect":rout}))#коннектим игрока
             new_clients=await cln(rout,client,clients0) #создаем массив игроков экземпл игры и удаляем из client0
             x=[(str(client.id)) for client in new_clients]
             game = du.DurakGame(rout)
@@ -109,7 +110,13 @@ async def broadcast(client,message,clients0,rout):
         if et=="hi" and i>0:
             await socket0(client,json.dumps({"id":str(client.id)}))
         if et=="set":
-            await router(e)
+            response=await mg.example_get(e,rout)
+            #print(response)
+            if response !=0 or None:
+                await router(json.loads(response))
+            else:     
+                 
+                await router(e)
     finally:
           return 0
 
@@ -137,7 +144,7 @@ async def start_server():
 asyncio.run(start_server())
 
 
-#python -m http.server   localhost:8080/index.html
+#python -m http.server   localhost:8000/index.html
 #python ws.py
 #python -m pip install motor
 #pip install beanie
