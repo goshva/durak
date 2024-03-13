@@ -8,6 +8,7 @@ class DurakGame:
         self.attacker = ''
         self.defender = ''
         self.players = list(range(players_count))
+        self.pl_roles=list()
        # self.suits = ['♥', '♦', '♣', '♠️']
         self.suits = ['Ch', 'B', 'K', 'P']
         self.ranks = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -40,9 +41,13 @@ class DurakGame:
         self.attacker = self.find_lowest_trump()#определяем кто первый ходит
         #random.choice(list(self.players.keys()))
         self.defender = self.get_next_player(self.attacker)#под кого ходят
-
+        for i in range(self.players_count):
+            self.pl_roles.append(self.role_play(i))
+        print(self.pl_roles)
     def s(self):
         self.active_suit =self.deck[len(self.deck)-1][0]
+        a=self.deck.pop()
+        self.deck.insert(0,a)
         print(self.deck[len(self.deck)-1])
 
 
@@ -108,6 +113,19 @@ class DurakGame:
         #while self.players_count > 0:
             #self.play_round()
         return(self)
+    def role_play(self,n):
+    
+        na=self.attacker
+        np=self.players
+        nd=self.defender
+        a=((na[0][0]==np[n][0][0])and(na[0][1]==np[n][0][1]))
+        b=((nd[0][0]==np[n][0][0])and(nd[0][1]==np[n][0][1]))
+        if a!=False:
+            return "attacker"
+        if b!=False:
+            return "defender"
+        else:
+            return "attacker2" 
 
 # Example usage
 #game = DurakGame(2)
