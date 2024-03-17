@@ -1,5 +1,6 @@
 //import {DurakGame,renderDeck,renderPlayerRoles,renderPlayersNames} from '/main.js';
 import {DurakGame,state} from './main.js';
+import {ws_player} from './autch.js';
 let ws;
 
 var id_prosses;
@@ -14,6 +15,7 @@ let rendersock =async (response) => {
 //let du=new DurakGame(r,ws);
 //let du=new DurakGame();
 state.r=r;state.ws=ws;
+ws_player.ws=ws;
 customElements.define('doom-arhitekt',DurakGame);
 //du.renders(null);
 
