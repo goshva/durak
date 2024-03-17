@@ -112,6 +112,9 @@ this._role[3]=(n>=4)?this.static_role[pos3]:null;
 this._role=this._role.filter((w) => w!==null);
 this._myrole=this._role[0];
 if(this.players_count===2 && e){this._role.reverse()}
+let data=JSON.stringify({"install":true})
+window.postMessage(data );
+
 	 }
 
 get Wm1(){return wm1}
@@ -241,7 +244,7 @@ this.passes+=1;
 let d= e.target.dataset;
 let  j=Number(d.play) 
 let k=Number(d.pos)
-console.log(e)
+//console.log(e)
 
 let task=this.task(j,k)
 if (await task===true){//если карту покрыл
@@ -322,7 +325,9 @@ e.preventDefault
 let d= e.target.dataset;
 let  j=Number(d.play) 
 let k=Number(d.pos)
-console.log(e)
+//console.log(e)
+//let data=JSON.stringify(d)
+//window.postMessage(data );
 
 let task=this.task(j,k)
 if (await task===true){//если карту покрыл
@@ -473,7 +478,8 @@ renderDeck(){
     
     
   //console.log(deck)
-  let deckCardsmap = deck.map((m,index)=> {return html`<img class="card_img deck_card" src="./img/card-back.png" style="top:${index * 2}px ;">`})
+  let deckCardsmap = deck.map((m,index)=> {return html`<img class="card_img deck_card" src="./img/card-back.png" style="top:${index * 2}px ;">`});
+  deckCardsmap.pop()
 
 return html`${active_suit},${deckCardsmap}`
 
