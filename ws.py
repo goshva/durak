@@ -5,10 +5,12 @@ import json
 #import ssl
 import asyncio
 import websockets
-#import ws_redis as rs
+import ws_redis as rs
 import json
 import durak_controller as mrm
 import dum as mg
+import secrets
+import broadautch as broad_autch
 #import requests
 
 #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -24,6 +26,8 @@ clients = set()
 clients2 = set()
 clients3 = set()
 clients4 = set()
+clients5 = set()
+
 
 async def choosing_path(path):
     if path=='/2':
@@ -32,6 +36,8 @@ async def choosing_path(path):
          return clients3
     if path=='/4':
          return clients4
+    if path=='/5':
+         return clients5
     else:
          return 0     
 
@@ -44,6 +50,7 @@ async def socket0(client,msg):
 
 
 async def router(e):
+    #await rs.redisget()
     gamers=e.get("deck_id")
     #print(gamers)
     for g in gamers:
@@ -111,9 +118,12 @@ async def broadcast(client,message,clients0,rout):
             await socket0(client,json.dumps({"id":str(client.id)}))
         if et=="set":
             response=await mg.example_get(e,rout)
+            #await rs.redisset(str(client.id),e[type])
+           
             #print(response)
             if response !=0 or None:
                 await router(json.loads(response))
+               
             else:     
                  
                 await router(e)
@@ -121,20 +131,29 @@ async def broadcast(client,message,clients0,rout):
           return 0
 
 async def handle_client(client, path):
+    
     rout=int(path[1])
+    print(rout)
     clients0=await choosing_path(str(path))
     clients0.add(client)
+   
     
     try:
         message = await client.recv()
         async for message in client:
-            await broadcast(client,message,clients0,rout)
+                
+            if rout !=5:
+                await broadcast(client,message,clients0,rout)
+            if str(path)=='/5':
+                await broad_autch.broadkast_router(client,message)     
     finally:
             clients0.discard(client)
-            clients.discard(client)
-            await mg.example_dell(str(client.id))
-            print(f"close clients2:{len(clients2)},clients3:{len(clients3)},clients4:{len(clients4)}")
-            print(f"len clients close:{len(clients)}")
+            print(f"len clients5 close:{len(clients5)}")
+            if str(client.path) !='/5':
+                clients.discard(client)
+                await mg.example_dell(str(client.id))
+                print(f"close clients2:{len(clients2)},clients3:{len(clients3)},clients4:{len(clients4)},clients5:{len(clients5)}")
+                print(f"len clients close:{len(clients)}")
 
 
 async def start_server():
