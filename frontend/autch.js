@@ -1,16 +1,23 @@
 
  import {vebcss} from './css/autch.css.js';
  import {LitElement,html,css} from 'lit';
-
+import {render_modalOne,render_modalTwo} from './renders.js';
+import {render_modalThree} from './chat_render.js';
+import{connekt} from './websocket_connect.js';
+import{router_echo1} from './echo1_router.js'
 export const ws_player={};
  
   
  class BordCount extends LitElement { 
  
  static properties = {
+	 _UserNames:{type:Array},
+	 _User:{type:String},
+	 _Users:{type:Array},
+	 _User_chat_active:{type:String},
 	 Chat:{type:Boolean},
-	 _ChatItems:{tipe:Array},
-    _listItems:{tipe:Array},
+	 _ChatItems:{type:Array},
+    _listItems:{type:Array},
     hideCompleted:{type:Boolean},
 	akkountVar:{type:Boolean}
   };
@@ -27,8 +34,17 @@ window.addEventListener("message",(event)=>this.ws_plinstall.call(this,event))//
 
 this.connect();
 this.echo=this.echo.bind(this);
-this.echo1=this.echo1.bind(this);  
-  }
+this.echo1=this.echo1.bind(this);
+this.input_msg=this.input_msg.bind(this);
+this.send_msg=this.send_msg.bind(this);
+this._Users=[1,2,3];
+this._User="User";
+this._User_chat_active=""
+this._UserNames=[];
+  };
+  
+ _input_msg=""; 
+ ackount={name:undefined,password:undefined,index:undefined,token:undefined};  
  ws;//порт/5
  ws1;//порты игры
 
@@ -44,21 +60,37 @@ localStorage.setItem(e.index,y);
 
 
  ;}
-
-
-
- 
-  
- ackount={name:undefined,password:undefined,index:undefined,token:undefined}; 
-  
-  echo1(e){console.log(e.data);this._ChatItems.push(JSON.parse(e.data));this.requestUpdate();}
-  
 async connect(){let user="btn-pw1"; this.ws= await connekt(user)
 this.ws.onmessage=this.echo; 
 }
 
-async ws_plinstall(ev){this.ws1=ws_player.ws ;this.ws1.addEventListener("message",this.echo1);
-if(this.ws !==undefined){this.ws.close();}
+
+ 
+target_user(event){this._User_chat_active=event.target.dataset.user;console.log(this._User_chat_active);}
+
+ echo1(e){/* console.log(e.data) */;//this._ChatItems.push(JSON.parse(e.data));this.requestUpdate();
+ router_echo1.call(this,e)
+ }
+  
+
+
+async ws_plinstall(ev){
+this.ws1=ws_player.ws ;this.ws1.addEventListener("message",this.echo1);
+if(this.ws !==undefined){this.ws.close();}	
+	
+if(ev){let e=JSON.parse(ev.data);if(e.install===true && this._listItems[0]){
+let u_s=e.users.map((i)=>{if(i!==e.id) return i})
+	
+this._UserNames=e.usernames;	
+this._Users=u_s;
+this._User=e.user;	
+console.log(this._User)
+console.log(this._UserNames)	
+//let n=this._listItems[0];	
+//let init=JSON.stringify({type:"init",name:n.name});	
+//console.log(this._listItems)	
+//this.ws1.send(init)	
+}};
  }  
   
   
@@ -82,12 +114,12 @@ var x=JSON.parse(xx)??null;this.ackount.token=x?.token;    this.ackount.index=va
   sset(e){  this.akkountVar=true,this.target=e.target.dataset.npw};
   
   ackount_set(){this.hideCompleted=true;};
-  
+ //закрытие окон 
 clickHandler(){this.akkountVar=false;
 this.hideCompleted=false; this.ackount={name:'',password:'',index:''};     return null};
-
+//закрытие чата
 clickHandler_Chat(){(this.Chat===false)?this.Chat=true:this.Chat=false;};
-  
+  //стереть аккаун
  clearone(e){let cw=this.target.index;
 localStorage.removeItem(cw);let k=this._listItems.findIndex(i=> i?.index===cw);console.log(k)
 this._listItems[k]=null;        return this.clickHandler() }; 
@@ -123,42 +155,20 @@ let data={type:"init-user",user:this.target.name,password:this.target.password,i
 	 
  }
  
-  
-   render(){
-	 
-const modalOne = this.hideCompleted?html`
  
-	
-<div class="col-sm-3" style="display:inline;"><i @click=${this.clickHandler} id="stop" style="display:flex;">+</i>	
-
-
-<div class="form"><form  action='/loginHome', method='POST'><label for="username">you username</label><input @input=${this.in_user} type='text' name='username' class='form-control form hform' placeholder='Name' required autofocus><input @input=${this.in_pwd} type='password' name='password' class='form-control form hform' placeholder='Password' required><div style="display:flex;"><input class='form bform' type='reset' value='RESET'><input @click=${this.ch} class='form bform' type='button' value='SAVE'></div></form></div></div>`:null;
-
-const modalTwo = this.akkountVar?html`<div class="col-sm-3" style="display:inline;"><i @click=${this.clickHandler} id="stop" style="display:flex;">+</i>	
-
-<h1>login with this account</h1>
-<div class="form"><form  action='/loginHome', method='POST'><label for="username">you username</label><input  type='text' name='username' class='form-control form hform' placeholder='Name' required autofocus value=${this.target.name}><input  type='password' name='password' class='form-control form hform' placeholder='Password' required value=${this.target.password}><div style="display:flex;"><input
-@click=${this.account_install}
- class='form bform' type='button' value='ENTER'><input @click=${this.clearone} class='form bform' type='button' data-id='${'e.target.id'}' data-npw=${this.target.index} value='CLEAR'></div></form></div>
-</div>`:null;
-
-let chat_content=this._ChatItems.map((value)=>
-{return html`
-    <li ><h3>messege from</h3>
-    <span class='u'>one</span>
-    <span class='u'>content</span></li>
-`})
-
-const modalThree =this.Chat? html`<div class="col-sm-3" style="display:inline;"><i @click=${this.clickHandler_Chat} id="stop" style="display:flex;">+</i>	
-<h1>THE CHAT</h1>
-<ul class="chat">${chat_content}</ul>
-<div class="form"><div><label for="username">Send message</label><input  type='text' name='username' class='form-control form hform' placeholder='Name' required autofocus><div style="display:flex;"><input class='form bform' type='submit' value='SEND'><input @click=${undefined} class='form bform' type='button' data-id='${'e.target.id'}' data-npw=${this.target.index} value='CLEAR'></div></div></div>
-</div>`:null;
-
-
-
-
-
+ input_msg(e){this._input_msg +=e.target.value;console.log(this._input_msg)}
+ send_msg(){let msg={type:"chat",name:this._listItems[0]?.name,id:this._User_chat_active,message:this._input_msg};
+ console.log(this._User_chat_active)
+ if(this.ws1){
+ this.ws1.send(JSON.stringify(msg));}
+ this._input_msg='';
+ }
+ 
+  //главный рендер компонента
+   render(){ 
+const modalThree=render_modalThree.call(this);//блок чата
+const modalTwo=render_modalTwo.call(this);//блок аккаунтов
+const modalOne=render_modalOne.call(this);//блок создания аккаунтов
 
 let xor=(this.hideCompleted||this.akkountVar||this.Chat);
 
@@ -198,55 +208,7 @@ let chat=!xor?html`<div class='mod' id="uux" @click=${this.clickHandler_Chat}>Th
  }
  
  
- async function connekt(user) {
- let ws = new WebSocket(`ws://localhost:8765/5`);
- 
- 
- 
- var xx=user?localStorage.getItem(`${user}`):undefined;
-	
-	var data=xx?JSON.parse(xx):undefined;
-	//var data=xx?xx:undefined;
 
- ws.onopen=async function open(e) {
-	 
-	ws.send(JSON.stringify({
-        "type": "hi",
-    })); 
-	 
-	 
-
-    if (data){
-		
-		
-		
-    ws.send(JSON.stringify({
-        type:"connect-user","autorisation":data.name,token:data.password
-    }));
-
-
-    }
-	
-	 if (data===undefined){
-    ws.send(JSON.stringify({
-        type:"connect-user","autorisation":null
-    }));
-
-
-    }
-	
-	
-	ws.onerror= async function error(err) {
-    console.error('Socket encountered error: ', err.message, 'Closing socket');
-    ws.close();
-};
-	
-    
-  };
-  return ws;
- 
- }
- 
  
  
  
