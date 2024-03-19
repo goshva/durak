@@ -75,6 +75,7 @@ export class DurakGame extends LitElement{
         this.id =state.r.id ;//ид юзера
         this.deck_id =state.r.deck_id;
 		this.static_role=state.r.pl_roles;
+		this.usernames=state.r.usernames;
         this.imgclick=this.imgclick.bind(this);
         this.echo=this.echo.bind(this);
         this.taks=this.taks.bind(this);
@@ -112,7 +113,8 @@ this._role[3]=(n>=4)?this.static_role[pos3]:null;
 this._role=this._role.filter((w) => w!==null);
 this._myrole=this._role[0];
 if(this.players_count===2 && e){this._role.reverse()}
-let data=JSON.stringify({"install":true})
+console.log(this.usernames)
+let data=JSON.stringify({"install":true,users:this.deck_id,user:this.id,usernames:this.usernames})
 window.postMessage(data );
 
 	 }
