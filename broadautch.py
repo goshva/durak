@@ -72,9 +72,10 @@ async def example_get(data,client):
         response= json.dumps(message)
         await client.send(response) 
     else :
-        message={'type':'susses',"error":"invalid token"}
-        response= json.dumps(message)
-        await client.send(response)    
+        if result==None:
+            message={'type':'susses',"error":"not name {name}"}
+            response= json.dumps(message)
+            await client.send(response)    
          
 
 def autch(client,message,clients0,rout):
