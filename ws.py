@@ -11,6 +11,7 @@ import durak_controller as mrm
 import dum as mg
 import secrets
 import broadautch as broad_autch
+import chat
 #import requests
 
 #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -89,9 +90,15 @@ async def cln(rout,cl,clients0):
           i+=1
           if i==rout:
                break
-         
-     #print(len(m))     
-     return m   
+     return m 
+
+async def users_init(clss):
+     s=[]
+     for cl in clss:
+          us=await rs.redisget(str(cl.id))
+          s.append(us)
+     return s     
+       
        
 
 
@@ -105,15 +112,20 @@ async def broadcast(client,message,clients0,rout):
         et=e.get("type")
         #en=e.get("n")
         if et=="start" and (i>1 and i>=rout):#если есть игроки и кол-во больш или равно роуту/2 /3 /4
-            await client.send(json.dumps({"connect":rout}))#коннектим игрока
+            #await client.send(json.dumps({"connect":rout}))#коннектим игрока
             new_clients=await cln(rout,client,clients0) #создаем массив игроков экземпл игры и удаляем из client0
-            x=[(str(client.id)) for client in new_clients]
-            game = du.DurakGame(rout)
-            game_state = game.play_game()
-            game_state.name=x[0]
-            game_state.deck_id=x
-            await mg.example(game_state) #DurakGame insert in Mongodb
-            await socketjson(game_state,new_clients)#send msg players
+            users_name=await users_init(new_clients)
+            print(users_name)
+            await client.send(json.dumps({"connect":rout,"us":users_name}))
+            if users_name:
+                x=[(str(client.id)) for client in new_clients]
+                game = du.DurakGame(rout)
+                game_state = game.play_game()
+                game_state.name=x[0]
+                game_state.deck_id=x
+                game_state.usernames=users_name
+                await mg.example(game_state) #DurakGame insert in Mongodb
+                await socketjson(game_state,new_clients)#send msg players
         if et=="hi" and i>0:
             await socket0(client,json.dumps({"id":str(client.id)}))
         if et=="set":
@@ -127,6 +139,13 @@ async def broadcast(client,message,clients0,rout):
             else:     
                  
                 await router(e)
+        if et=="init":
+             e_n=e.get("name")
+             await rs.redisset(str(client.id),e_n)
+
+        if et=="chat":
+             await chat.router(e,clients,client)
+                     
     finally:
           return 0
 
@@ -152,6 +171,7 @@ async def handle_client(client, path):
             if str(client.path) !='/5':
                 clients.discard(client)
                 await mg.example_dell(str(client.id))
+                await rs.redisdel(str(client.id))
                 print(f"close clients2:{len(clients2)},clients3:{len(clients3)},clients4:{len(clients4)},clients5:{len(clients5)}")
                 print(f"len clients close:{len(clients)}")
 
