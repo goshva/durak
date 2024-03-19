@@ -8,8 +8,9 @@ console.log(id_prosses);
 
 let rendersock =async (response) => {
     let r=response;
-    const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes,target] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes,r.target];
-
+    const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes,target,usernames] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes,r.target,
+	r.usernames];
+console.log(response)
     // Рисуем карты игроков
   // renderPlayerCards(players, players[target],passes,target);
 //let du=new DurakGame(r,ws);
@@ -59,9 +60,18 @@ ws = new WebSocket(`ws://localhost:8765/${path}`);
     ws.send(JSON.stringify({
         "type": "hi",
     }));
+	
+	
+//autorisation	
+let l_s=localStorage.getItem('btn-pw1');
+let j_s=l_s?JSON.parse(l_s):null;
+let username=j_s?j_s.name:"gamer";	
+	
+let init=JSON.stringify({type:"init",name:username});
 
-
-    sent(path)
+ws.send(init);
+sent()
+    //sent(path)
     
   };
 
@@ -100,7 +110,8 @@ ws = new WebSocket(`ws://localhost:8765/${path}`);
     ws.close();
 };
 
- function sent(path){ws.send(JSON.stringify({
+
+ function sent(){ws.send(JSON.stringify({
   type: "start",n:`${path}`
 }))}
 
