@@ -17,6 +17,7 @@ class DurakGame:
         self.deck_id=[]
         self.id=''
         self.name=''
+        self.usernames=[]
     def create_deck(self):
         self.deck = [(suit, rank) for suit in self.suits for rank in self.ranks]
         
