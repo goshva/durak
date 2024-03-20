@@ -19,7 +19,7 @@ export const ws_player={};
 	 _ChatItems:{type:Array},
     _listItems:{type:Array},
     hideCompleted:{type:Boolean},
-	akkountVar:{type:Boolean}
+	akkountVar:{type:Boolean},
   };
   static styles =vebcss; 
 
@@ -41,6 +41,7 @@ this._Users=[1,2,3];
 this._User="User";
 this._User_chat_active=""
 this._UserNames=[];
+this.autch_message='hello world';
   };
   
  _input_msg=""; 
@@ -48,18 +49,21 @@ this._UserNames=[];
  ws;//порт/5
  ws1;//порты игры
 
-echo(me){let e=JSON.parse(me.data)
+echo(me){let e=JSON.parse(me.data);console.log(this.autch_message)
 //{"type": "autorisation", "token": "5chdRAe7ZUfSevp0"}
 if(e.type=="autorisation" && e.token){let l_i=localStorage.getItem(e.index)
 let x=JSON.parse(l_i);x.token=e.token;let y=JSON.stringify(x);
 console.log(e.index)
 console.log(x)
 //localStorage.removeItem(e.index)
-localStorage.setItem(e.index,y);	
+localStorage.setItem(e.index,y);
+this.autch_message=`you registered as ${e.name}`;
+this.requestUpdate();	
 }
-
-
- ;}
+if(e.type=="susses" && !e.error){this.autch_message=`You are logged in as ${e.name}`;this.requestUpdate();}
+if(e.type=="susses" && e.error){this.autch_message=` ${e.error}`;this.requestUpdate();}
+console.log(this.autch_message)
+ }
 async connect(){let user="btn-pw1"; this.ws= await connekt(user)
 this.ws.onmessage=this.echo; 
 }
@@ -120,9 +124,7 @@ this.hideCompleted=false; this.ackount={name:'',password:'',index:''};     retur
 //закрытие чата
 clickHandler_Chat(){(this.Chat===false)?this.Chat=true:this.Chat=false;};
   //стереть аккаун
- clearone(e){let cw=this.target.index;
-localStorage.removeItem(cw);let k=this._listItems.findIndex(i=> i?.index===cw);console.log(k)
-this._listItems[k]=null;        return this.clickHandler() }; 
+
   
  in_pwd(e){
   
@@ -146,17 +148,28 @@ this._listItems[k]=null;        return this.clickHandler() };
  
  } }
  
- account_install(e){
-if(this.target.token===undefined){	 
+ //установка аккаунтов
+ 
+account_install(e){
+if(this.target.token===undefined && this.ws){	 
 let data={type:"init-user",user:this.target.name,password:this.target.password,index:this.target.index}	 
 	 this.ws.send(JSON.stringify(data));
-}
+}};
+//delete akount
+ clearone(e){
 	 
-	 
+	 console.log(this.target.token)
+if(this.target.token && this.ws){	 
+let data={type:"uninstall-user",user:this.target.name,token:this.target.token}	 
+	 this.ws.send(JSON.stringify(data));	 
+let cw=this.target.index;
+localStorage.removeItem(cw);let k=this._listItems.findIndex(i=> i?.index===cw);console.log(k)
+this._listItems[k]=null;        return this.clickHandler() 
  }
+}; 
  
  
- input_msg(e){this._input_msg +=e.target.value;console.log(this._input_msg)}
+ input_msg(e){this._input_msg =e.target.value;console.log(this._input_msg)}
  send_msg(){let msg={type:"chat",name:this._listItems[0]?.name,id:this._User_chat_active,message:this._input_msg};
  console.log(this._User_chat_active)
  if(this.ws1){
@@ -214,7 +227,7 @@ let chat=!xor?html`<div class='mod' id="uux" @click=${this.clickHandler_Chat}>Th
  
  
  
- customElements.define('simple-greeting',BordCount );
+ customElements.define('pink-floid',BordCount );
  
  
  
