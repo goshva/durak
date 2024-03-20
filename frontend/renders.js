@@ -16,10 +16,16 @@ const modalOne = this.hideCompleted?html`
 return modalOne}
 
 
+
+
+
 export function render_modalTwo(){
+let p_p=this.autch_message?html`<p class='form bform'>${this.autch_message}</p>`:null;	
+	
+	
 const modalTwo = this.akkountVar?html`<div class="col-sm-3" style="display:inline;"><i @click=${this.clickHandler} id="stop" style="display:flex;">+</i>	
 
-<h1>login with this account</h1>
+<h1>login with this account</h1>${p_p}
 <div class="form"><form  action='/loginHome', method='POST'><label for="username">you username</label><input  type='text' name='username' class='form-control form hform' placeholder='Name' required autofocus value=${this.target.name}><input  type='password' name='password' class='form-control form hform' placeholder='Password' required value=${this.target.password}><div style="display:flex;"><input
 @click=${this.account_install}
  class='form bform' type='button' value='ENTER'><input @click=${this.clearone} class='form bform' type='button' data-id='${'e.target.id'}' data-npw=${this.target.index} value='CLEAR'></div></form></div>
