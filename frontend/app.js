@@ -1,6 +1,5 @@
-//import {DurakGame,renderDeck,renderPlayerRoles,renderPlayersNames} from '/main.js';
-import {DurakGame,state} from './main.js';
-import {ws_player} from './autch.js';
+import {DurakGame,state} from './games/main.js';
+import {ws_player} from './chat/autch.js';
 let ws;
 
 var id_prosses;
