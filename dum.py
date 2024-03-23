@@ -1,5 +1,6 @@
 #import durak_class as du
 #from typing import  List,Optional
+import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 #from pydantic import BaseModel
 import json
@@ -56,12 +57,8 @@ async def example_get(e,rout):
         y=game.players[a][b]
         game.cach[a].append(y)
         game.players[a][b]=None
-    #ind=game.players[a].index(c)
-    #print(c)
+     
         game.passes=e.get("passes")
-        #game.cach=e.get("cach")
-    #print(game.cach)
-    #game.players[a].pop(ind) 
         
         await game.save()
         return 0
@@ -74,21 +71,20 @@ async def example_get(e,rout):
             print(role)
             n =game.cach[int(t)]
             nn =game.cach[int(u)]
-           
-            #game.players[int(u)]
             for i in n:
                 game.players[int(u)].append(i)
                 
             for i in nn:   
                 game.players[int(u)].append(i)
             game.cach[int(t)].clear()    
-            game.cach[int(u)].clear()   
-            await sortdek(game.players[int(u)])
-            await sortdek(game.players[int(t)])
+            game.cach[int(u)].clear()
+            await gather_sort(game.players[int(u)],game.players[int(t)])
+          
             n6 = len(game.players[int(t)])
             nn6=6-n6
-            if nn6>0:
-                await popdek(game.deck,game.players[int(t)],nn6)     
+            if nn6>0 and len(game.deck) !=0:
+                task = asyncio.create_task( popdek(game.deck,game.players[int(t)],nn6))
+                await task     
 
             await game.save()
             response={'type':'round-taks','deck':game.deck,'players':game.players,'roles':game.roles,'cach':game.cach,'deck_back':game.deck_back,'deck_id':game.deck_id,'bito':False}
@@ -100,12 +96,14 @@ async def example_get(e,rout):
             for ie in range(rout):
                 print(ie)
                 for i in game.cach[ie]:game.players[ui].append(i)
-                game.cach[ie].clear()      
-                await sortdek(game.players[ie])
+                game.cach[ie].clear()
+                task = asyncio.create_task(sortdek(game.players[ie]))      
+                await task
                 n6 = len(game.players[ie])
                 nn6=6-n6
-                if nn6>0:
-                    await popdek(game.deck,game.players[ie],nn6)
+                if nn6>0 and len(game.deck) !=0:
+                    task = asyncio.create_task(popdek(game.deck,game.players[ie],nn6))
+                    await task
             print('end')        
             await game.save() 
             response={'type':'round-taks','deck':game.deck,'players':game.players,'roles':game.roles,'cach':game.cach,'deck_back':game.deck_back,'deck_id':game.deck_id,'bito':False}
@@ -120,27 +118,31 @@ async def example_get(e,rout):
             num = len(game.players)
             for ie in range(num):
                 print(ie)
-                await sortdek(game.players[ie])
+                task11 = asyncio.create_task(sortdek(game.players[ie]))
+                await task11
                 nn = len(game.players[ie])
                 nn6=6-nn
-                if nn6>0:
-                    await popdek(game.deck,game.players[ie],nn6)
-                await back_dek(game.cach,ie,game.deck_back)
+                if nn6>0 and len(game.deck) !=0:
+                    task = asyncio.create_task(popdek(game.deck,game.players[ie],nn6))
+                    await task
+                task1 = asyncio.create_task( back_dek(game.cach,ie,game.deck_back))
+                await task1
                 game.cach[ie].clear()                              
             await game.save()
             response={'type':'round-taks','deck':game.deck,'players':game.players,'roles':game.roles,'cach':game.cach,'deck_back':game.deck_back,'deck_id':game.deck_id,'bito':True}
             return json.dumps(response) 
 async def sortdek(gm):
-    for i in range(2):
+    for i in range(3):
        for i in gm:
-            if not i!=None:
-                gm.remove(i)
+            if i==None:
+                 gm.remove(i)
 
 async def popdek(gmd,gm,nn6):
    for ii in range(nn6):
-        y=gmd.pop(-1)
-        if y !=None:
-           gm.append(y)  
+        if gmd[ii]:
+            y=gmd.pop(-1)
+            if y !=None:
+               gm.append(y)  
 
 async def back_dek(game_cach,num,game_deck_back):
     
@@ -148,4 +150,10 @@ async def back_dek(game_cach,num,game_deck_back):
             if x!=None:
                 game_deck_back.append(x)
                 #game_cach[num].remove(x)
+
+async def gather_sort(a,b):
+         await asyncio.gather(
+         sortdek(a),
+        sortdek(b)
+       )
 
