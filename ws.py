@@ -30,6 +30,12 @@ clients4 = set()
 clients5 = set()
 
 
+async def gather_exe(game_state,new_clients):
+         await asyncio.gather(mg.example(game_state),socketjson(game_state,new_clients))
+     
+
+
+
 async def choosing_path(path):
     if path=='/2':
          return clients2
@@ -124,21 +130,27 @@ async def broadcast(client,message,clients0,rout):
                 game_state.name=x[0]
                 game_state.deck_id=x
                 game_state.usernames=users_name
-                await mg.example(game_state) #DurakGame insert in Mongodb
-                await socketjson(game_state,new_clients)#send msg players
+                await gather_exe(game_state,new_clients)
+               
+                   
         if et=="hi" and i>0:
             await socket0(client,json.dumps({"id":str(client.id)}))
         if et=="set":
-            response=await mg.example_get(e,rout)
+            tasks = asyncio.create_task(mg.example_get(e,rout))
+            #response=await mg.example_get(e,rout)
             #await rs.redisset(str(client.id),e[type])
+            response =await tasks
            
             #print(response)
             if response !=0 or None:
-                await router(json.loads(response))
+                task = asyncio.create_task(router(json.loads(response)))
+                #await router(json.loads(response))
+                await task
                
             else:     
-                 
-                await router(e)
+                task1 = asyncio.create_task(router(e)) 
+                #await router(e)
+                await task1
         if et=="init":
              e_n=e.get("name")
              await rs.redisset(str(client.id),e_n)
