@@ -1,12 +1,14 @@
 import {html} from 'lit';
 import {suitsMapping2}from './static.js';
 
-export function images_render(i){let e=this._echo;
+export function images_render(i,p_p,rb){let e=this._echo;
 
-if((e?.players!==null)&&(Number(e?.players)===i)&&(e?.id!==this.id)){
+if((e?.type==="set")&&(e?.id!==this.id)&&(i !==this.target)){//&&(Number(e?.players)===i)
 
 //console.log(e);//рендерим только того игрока в зависимости сообщения сокета
-	return this.echorender(e,i)}
+
+	
+	return this.echorender(e,i,p_p,rb)}
 else{
 	
 let nn=(this._myrole==="attacker"||this._myrole==="attacker2");
