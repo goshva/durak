@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import durak_class as du
 import json
 import pathlib
@@ -6,21 +5,22 @@ import ssl
 import asyncio
 import websockets
 import json
+import os
 
-#ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-#localhost_pem = pathlib.Path(__file__).with_name("key_cert.pem")
-#ssl_context.load_cert_chain(localhost_pem)
-j11=open("durak/2.json", "r")
+# Accessing a specific environment variable
+PORT = os.getenv('PORT')
+URL = os.getenv('URL')
+
+if PORT or URL:
+    print('ENV_VARIABLES is not set')
+
+j11=open("../2.json", "r")
 j1=j11.read()
 j11.close()
 
-j22=open("durak/3.json", "r")
+j22=open("../3.json", "r")
 j2=j22.read()
 j22.close()
-
-
-
-
 
 clients = set()
 
@@ -53,7 +53,7 @@ async def handle_client(websocket, path):
         clients.remove(websocket)
 
 async def start_server():
-    async with websockets.serve(handle_client, "0.0.0.0", 8765): #, ssl=ssl_context):
+    async with websockets.serve(handle_client, URL, PORT): #, ssl=ssl_context):
         await asyncio.Future()  # Run forever
 
 asyncio.run(start_server())
