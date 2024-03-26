@@ -8,7 +8,7 @@ import {images_render} from './images_render.js';
 import {render_deck} from './render_deck.js';
 import {render_right} from './render_right.js';
 import {render_left} from './render_left.js';
-import {passesMapping}from './static.js';
+import {suitsMapping2,A,passesMapping}from './static.js';
 import {Konduktor}from './konduktor.js';
 
 export const state={};
@@ -178,7 +178,11 @@ else {return false};
 
 //событие карта на столе
 //обработчик клика attacker attacker2 images_render.js
-async imgclick(e){if( e.target .style.top ==='-256px')return
+async imgclick(e){
+let pss=this.passes;	
+let xx=(this._myrole==='attacker2')	
+if( e.target .style.top ==='-256px')return
+if(xx&& pss===0 )return
 e.preventDefault
 //Av.push(e.target);
 
@@ -190,7 +194,7 @@ let k=Number(d.pos)
 
 let task=this.task(j,k)
 if (await task===true){//если карту покрыл
-    let xx=(this._myrole==='defender')  
+    let xx=(this._myrole==='attacker2')  
    this.passes?passesMapping[this.passes](e.target):'';
    e.target .style.top = '-256px';
    e.target.classList.remove(`cards_number-${6}-hover`);
@@ -343,11 +347,11 @@ function span_atr(x){let a=(x==="attacker")?span_1:(x==="defender")?span_2:null;
  let ix_text=(this._role[0]==="attacker")?"ваш ход":(this._role[0]==="attacker2")?"подкидывай карты":"вам крыться";
  let iy_text=(this._role[0]==="attacker")?"бито":(this._role[0]==="attacker2")?"бито":"беру";
 let span_0=html`<span @click=${this.taks} class="mod">${!a?iy_text:ix_text}</span>`;
-	
+let[p_p,rb]=this._echo?.type&&!eho?this.prerender():[null,null];	
 let n=this.players_count;	
-let left=(n>=3)?this.Img(this._pos2):null;
-let right=(n===4)?this.Img(this._pos3):null;
-let header=this.Img(this._pos1);
+let left=(n>=3)?this.Img(this._pos2,p_p,rb):null;
+let right=(n===4)?this.Img(this._pos3,p_p,rb):null;
+let header=this.Img(this._pos1,p_p,rb);
 let footer=a||eho?this.Img(this._pos0):this.foo;//сохранить чтобы не рендерить себя до конца раунда
 a||eho?this.foo=footer:null;
 //let footer=this.Img(this._pos0)
@@ -396,15 +400,44 @@ ${span_u0}
 
 };
 
- Img(i){
-return images_render.call(this,i);	 
+ Img(i,p_p,rb){
+return images_render.call(this,i,p_p,rb);	 
 	 
 }
 
- echorender(e,i){ 
-	return img_render.call(this,e,i);
+ echorender(e,i,p_p,rb){ 
+	return img_render.call(this,e,i,p_p,rb);
 	
 };
+
+
+prerender(){let e=this._echo;
+let j=Number(e.players); 
+ let k=Number(e.pos);
+ let p1=this.players[j];
+  var p_p=this.players[j][k];
+ var i_i=e.broken_card;
+ console.log("broken_card:"+i_i)
+ console.log("attach_card:"+p_p)
+ let rb;
+function sort_card2(){this.konduktor.get_aktive().forEach((i,index,a)=>{if((i[0]===i_i[0])&&(i[1]===i_i[1])){a.splice(index,1);rb=i;}});
+ rb?this.konduktor.set_back(rb,this.players[j][k]):null;}
+  let xx=(e.role==='defender');//если мсг от кроющ
+   let yy=((e.role==='attacker')||(e.role==='attacker2'));//for defender
+this.passes=e.passes;
+   
+yy&&(this._myrole==="defender")?this.konduktor.set_aktive(this.players[j][k]):null;
+xx?sort_card2.call(this):null;
+let ps=e.passes;
+let wm3=this.konduktor.get_wm3();	
+
+wm3.set(p_p,A[ps])
+ 
+this.cash[j].push(this.players[j][k]);	
+ this.players[j].splice(k,1,null);	
+ 
+ 
+return [p_p,rb] } 
 
 
 
