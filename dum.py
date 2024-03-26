@@ -122,17 +122,26 @@ async def example_get(e,rout):
                 await task11
                 nn = len(game.players[ie])
                 nn6=6-nn
-                if nn6>0 and len(game.deck) !=0:
+                if nn6>=0 and (len(game.deck)>=nn6):
+                    print('one')
                     task = asyncio.create_task(popdek(game.deck,game.players[ie],nn6))
                     await task
-                task1 = asyncio.create_task( back_dek(game.cach,ie,game.deck_back))
-                await task1
+                if nn6>len(game.deck):
+                    print('two')
+                    task = asyncio.create_task(popdek(game.deck,game.players[ie],len(game.deck)))
+                    await task
+                if len(game.cach[ie])>0:
+                    print('three')    
+                    task1 = asyncio.create_task( back_dek(game.cach,ie,game.deck_back))
+                    await task1
                 game.cach[ie].clear()                              
             await game.save()
             response={'type':'round-taks','deck':game.deck,'players':game.players,'roles':game.roles,'cach':game.cach,'deck_back':game.deck_back,'deck_id':game.deck_id,'bito':True}
             return json.dumps(response) 
 async def sortdek(gm):
-    for i in range(3):
+ 
+    for ii in range(3):
+     if None in gm: 
        for i in gm:
             if i==None:
                  gm.remove(i)
