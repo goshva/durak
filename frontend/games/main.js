@@ -54,6 +54,7 @@ export class DurakGame extends LitElement{
 	    this._role=[];
         this._myrole='null';
 		this._round=0;
+		
 	   this.connect();
 	  
 	          
@@ -349,9 +350,9 @@ function span_atr(x){let a=(x==="attacker")?span_1:(x==="defender")?span_2:null;
 let span_0=html`<span @click=${this.taks} class="mod">${!a?iy_text:ix_text}</span>`;
 let[p_p,rb]=this._echo?.type&&!eho?this.prerender():[null,null];	
 let n=this.players_count;	
-let left=(n>=3)?this.Img(this._pos2,p_p,rb):null;
-let right=(n===4)?this.Img(this._pos3,p_p,rb):null;
-let header=this.Img(this._pos1,p_p,rb);
+let left=(n>=3)?this.Img(this._pos2):null;
+let right=(n===4)?this.Img(this._pos3):null;
+let header=this.Img(this._pos1);
 let footer=a||eho?this.Img(this._pos0):this.foo;//сохранить чтобы не рендерить себя до конца раунда
 a||eho?this.foo=footer:null;
 //let footer=this.Img(this._pos0)
@@ -400,13 +401,13 @@ ${span_u0}
 
 };
 
- Img(i,p_p,rb){
-return images_render.call(this,i,p_p,rb);	 
+ Img(i){
+return images_render.call(this,i);	 
 	 
 }
 
- echorender(e,i,p_p,rb){ 
-	return img_render.call(this,e,i,p_p,rb);
+ echorender(e,i){ 
+	return img_render.call(this,e,i);
 	
 };
 
@@ -424,15 +425,18 @@ function sort_card2(){this.konduktor.get_aktive().forEach((i,index,a)=>{if((i[0]
  rb?this.konduktor.set_back(rb,this.players[j][k]):null;}
   let xx=(e.role==='defender');//если мсг от кроющ
    let yy=((e.role==='attacker')||(e.role==='attacker2'));//for defender
+   let xx_passive=((this._myrole==='attacker')||(this._myrole==='attacker2'))&& (e?.id!==this.id)
 this.passes=e.passes;
    
 yy&&(this._myrole==="defender")?this.konduktor.set_aktive(this.players[j][k]):null;
 xx?sort_card2.call(this):null;
 let ps=e.passes;
 let wm3=this.konduktor.get_wm3();	
-
+let wm2=this.konduktor.get_wm2();
 wm3.set(p_p,A[ps])
- 
+if(xx&&!xx_passive){wm2.set(p_p,rb)};
+if(xx_passive&&yy){wm2.set(p_p,rb);
+	wm3.set(rb,A[ps])}; 
 this.cash[j].push(this.players[j][k]);	
  this.players[j].splice(k,1,null);	
  
