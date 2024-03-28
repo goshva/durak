@@ -434,6 +434,7 @@ let ps=e.passes;
 let wm3=this.konduktor.get_wm3();	
 let wm2=this.konduktor.get_wm2();
 wm3.set(p_p,A[ps])
+if(xx){wm2.set(p_p,rb)};	    
 if(xx&&!xx_passive){wm2.set(p_p,rb)};
 if(xx_passive&&yy){wm2.set(p_p,rb);
 	wm3.set(rb,A[ps])}; 
