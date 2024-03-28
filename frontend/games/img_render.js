@@ -22,7 +22,7 @@ import {suitsMapping2,A,passesMapping}from './static.js';
 		  
 
  
- export function img_render(e,i,p_p,rb){
+ export function img_render(e,i){
 
 	
 
@@ -39,17 +39,24 @@ this.passes=e.passes;
 
 	let a=this.players[i].map((x,i)=>{if(x!==null) return html`<img class="card_img cards_number-6" style="top:0px;" src="./img/card-back.png">`;});
 	
+ 
+let ps=e.passes;
 
-let ps=e.passes;	
+let xx_passive=((this._myrole==='attacker')||(this._myrole==='attacker2'))//passive attacker attacker2
+
+console.log(`xx_passive${xx_passive}`)
+	
 if(xx){
-	console.log(this.cash[i])
+	//console.log(this.cash[i])
+	let wm3=this.konduktor.get_wm3();
 	let wm2=this.konduktor.get_wm2();
 	let wm1=this.konduktor.get_wm1();
-	wm2.set(p_p,rb)
+	//wm2.set(p_p,rb)
 	let y=this.cash[i];
     let c=y.map((x,i,a)=>{if(x!==null){
 	
 	let ww=(wm2.has(x))?wm1.get(wm2.get(x)):i;
+	if(!ww){ww=wm3.get(x)}
 	console.log(ww);	
     let [sym, ra] = [x[0],x[1]];
     let suit = suitsMapping2[sym];
@@ -64,8 +71,8 @@ if(xx){
  return html`${a}${c}`
  }
   
-if(yy){
-console.log(this.cash[i])	
+if(yy&&(this._myrole==='defender')){
+//console.log(this.cash[i])	
  //for defender
  let wm3=this.konduktor.get_wm3();
  
@@ -73,7 +80,7 @@ console.log(this.cash[i])
     let c=y.map((x,i,a)=>{if(x!==null){
 	let ww=(wm3.get(x))?wm3.get(x):null	
 	//console.log(wm3.get(x));
-	//console.log(ww);	
+	console.log(ww);	
     let [sym, ra] = [x[0],x[1]];
     let suit = suitsMapping2[sym];
     let img=`./img/${suit}${ra}.png`; 
@@ -88,5 +95,31 @@ console.log(this.cash[i])
 	
  return html`${a}${c}`
 }
+
+if(xx_passive&&yy){
+	
+	
+	
+	let wm3=this.konduktor.get_wm3();
+	
+	let y=this.cash[i];
+    let c=y.map((x,i,a)=>{if(x!==null){
+	
+	let ww=wm3.get(x)
+	
+	console.log(ww);	
+    let [sym, ra] = [x[0],x[1]];
+    let suit = suitsMapping2[sym];
+    let img=`./img/${suit}${ra}.png`; 
+    return html`<img class="card_img cards_number-6 " 
+	
+	style="transform:translateY(-250px);
+	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};"
+	src =${img}
+	${animate(logoOptions())} >` }})
+	
+ return html`${a}${c}`
+ }
+
  
  };
