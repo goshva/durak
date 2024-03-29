@@ -8,7 +8,7 @@ import{router_echo1} from './echo1_router.js'
 export const ws_player={};
  
   
- class BordCount extends LitElement { 
+export class BordCount extends LitElement { 
  
  static properties = {
 	 _UserNames:{type:Array},
