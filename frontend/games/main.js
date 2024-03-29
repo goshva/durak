@@ -10,6 +10,8 @@ import {render_right} from './render_right.js';
 import {render_left} from './render_left.js';
 import {suitsMapping2,A,passesMapping}from './static.js';
 import {Konduktor}from './konduktor.js';
+import {Rout}from './rout.js';
+import {Prerender}from './prerender.js';
 
 export const state={};
 
@@ -60,6 +62,8 @@ export class DurakGame extends LitElement{
 	          
 }
 konduktor=new Konduktor();
+b_ack;
+new_count=false;
 
 connect(e) {
 //вычисляем индех чтобы позиция юзера игры всегда находилась внизу	
@@ -86,46 +90,22 @@ console.log(this.usernames)
 let data=JSON.stringify({"install":true,users:this.deck_id,user:this.id,usernames:this.usernames})
 window.postMessage(data );
 
+this.b_ack= html`<img src=./img/${suitsMapping2[this?.deck[0][0]]}${this?.deck[0][1]}.png alt="Card back" class="card_img" style="opacity: 0.5;" />`
+
 	 }
 
 
 async task(j,k){
 if(this._myrole==="attacker"){return await this.matrix_attacker(j,k)}//ту ли карту дал
-if(this._myrole==="attacker2"){return await this.matrix_attacker2(j,k)}//ту ли карту дал
+if(this._myrole==="attacker2"){return await this.matrix_attacker(j,k)}//ту ли карту дал
 if(this._myrole==="defender"){return await this.matrix_defender(j,k)}//если покрыл /true/
 
 }
-//событие сокета 'взял карты '
+//событие сокета 'взял карты или покрыл '
+//на 3    надо сделать на 4 игроков?
 rout(e){
-    if(e.type==="round-count"){return this.newround(k)}//не настроено
-    if(e.type==="round-end"){return this.newround(k)}//не настроено
-    if(e.type==="round-taks"){
-
-this.konduktor.clearAll();
-        this.deck =e.deck ;
-        this.players = e.players;
-        this.static_role =e.roles 
-        this.back =e.deck_back;
-		this.cash=e.cach;
-        this.passes=0;
-
-
- 
-  this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>{i.style.top='0px';i.removeAttribute("style")});      
-        
-        
-      //this._round +=1 ;
-	  this._echo=e;
-	  this._round +=1 ;
-if(e.bito===true && this.players_count===2){this._role.reverse();
-if(this._myrole==="defender"){this._myrole="attacker"}
-else{this._myrole="defender"}
-console.log(this._myrole)
-}	  
-	  
-	  
-	  }//событие взял карты
-    
+ Rout.call(this,e);  
+   
     }
 newround(e){console.log(`return this.newround(k)`);
   
@@ -142,7 +122,18 @@ return this._round +=1;
 } //событие пусть берет   
 
 //логика атаки
-async matrix_attacker(j,k){return true}//добавить обработчик соответствия карт attacker
+async matrix_attacker(j,k){
+let a_cards=this.konduktor.get_aktive();
+let b_cards=this.konduktor.get_back().map((i)=>{return[i.one,i.two]}).flat();
+let a_b=a_cards.concat(b_cards);
+console.log(a_b)	
+let my_card=this.players[j][k];	
+let result=a_b.map((i,index)=>{let e1=(my_card[1]===i[1]);if(e1){return true}})
+let p_i=this.passes===0;	
+let r_a=result.includes(true);
+
+if (r_a||p_i){return true;}//если все Ок промис труе отправляем сокет с данными
+else if(!r_a){return false};	}//добавить обработчик соответствия карт attacker
 async matrix_attacker2(j,k){return true}//добавить обработчик соответствия карт attacker2
 
 
@@ -181,21 +172,21 @@ else {return false};
 //обработчик клика attacker attacker2 images_render.js
 async imgclick(e){
 let pss=this.passes;	
-let xx=(this._myrole==='attacker2')	
+let xx=(this._myrole==='attacker2' && !this.new_count)	
 if( e.target .style.top ==='-256px')return
 if(xx&& pss===0 )return
 e.preventDefault
 //Av.push(e.target);
 
-this.passes+=1;
+
 let d= e.target.dataset;
 let  j=Number(d.play) 
 let k=Number(d.pos)
 //console.log(e)
 
 let task=this.task(j,k)
-if (await task===true){//если карту покрыл
-    let xx=(this._myrole==='attacker2')  
+if (await task===true){
+	this.passes+=1;
    this.passes?passesMapping[this.passes](e.target):'';
    e.target .style.top = '-256px';
    e.target.classList.remove(`cards_number-${6}-hover`);
@@ -358,6 +349,7 @@ a||eho?this.foo=footer:null;
 //let footer=this.Img(this._pos0)
 //let footer=this.Img(this._pos0)
 let section=this.renderDeck();
+let b_ack=this.b_ack;//когда кончиться колода отобразить козыря
 
 return html`<div class=super>
 ${n>=3?this.left(left,span_atr(this._role[2]),span_u2):null}
@@ -379,7 +371,7 @@ ${span_u1}
 </header>
 <section class="content">
 <div class="deck_flex">
-${section??html`<img src="img/card-back.png" alt="Card back" class="card_img" />`}
+${section??b_ack}
 </div>
 <div class="table_grid"></div>
 <div class="deck_flex"></div>
@@ -412,37 +404,7 @@ return images_render.call(this,i);
 };
 
 
-prerender(){let e=this._echo;
-let j=Number(e.players); 
- let k=Number(e.pos);
- let p1=this.players[j];
-  var p_p=this.players[j][k];
- var i_i=e.broken_card;
- console.log("broken_card:"+i_i)
- console.log("attach_card:"+p_p)
- let rb;
-function sort_card2(){this.konduktor.get_aktive().forEach((i,index,a)=>{if((i[0]===i_i[0])&&(i[1]===i_i[1])){a.splice(index,1);rb=i;}});
- rb?this.konduktor.set_back(rb,this.players[j][k]):null;}
-  let xx=(e.role==='defender');//если мсг от кроющ
-   let yy=((e.role==='attacker')||(e.role==='attacker2'));//for defender
-   let xx_passive=((this._myrole==='attacker')||(this._myrole==='attacker2'))&& (e?.id!==this.id)
-this.passes=e.passes;
-   
-yy&&(this._myrole==="defender")?this.konduktor.set_aktive(this.players[j][k]):null;
-xx?sort_card2.call(this):null;
-let ps=e.passes;
-let wm3=this.konduktor.get_wm3();	
-let wm2=this.konduktor.get_wm2();
-wm3.set(p_p,A[ps])
-if(xx){wm2.set(p_p,rb)};	    
-if(xx&&!xx_passive){wm2.set(p_p,rb)};
-if(xx_passive&&yy){wm2.set(p_p,rb);
-	wm3.set(rb,A[ps])}; 
-this.cash[j].push(this.players[j][k]);	
- this.players[j].splice(k,1,null);	
- 
- 
-return [p_p,rb] } 
+prerender(){return Prerender.call(this,A) } //настраиваем данные перед рендером
 
 
 
