@@ -43,7 +43,7 @@ get_aktive(){return this.aktive}
 
 get_back(){return this.back}
 
-set_aktive(u){this.aktive.push(u)}
+set_aktive(u){!this.aktive.includes(u)?this.aktive.push(u):null}
 
 get_wm2(){return this.#Wm2}
 
