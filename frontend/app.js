@@ -1,3 +1,4 @@
+import {BordCount} from"./chat/autch.js"
 import {DurakGame,state} from './games/main.js';
 import {ws_player} from './chat/autch.js';
 let ws;
