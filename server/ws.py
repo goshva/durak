@@ -5,14 +5,12 @@ import ssl
 import asyncio
 import websockets
 import json
+from dotenv import load_dotenv
 import os
-
-# Accessing a specific environment variable
+load_dotenv()
 PORT = os.getenv('PORT')
 URL = os.getenv('URL')
-
-if PORT or URL:
-    print('ENV_VARIABLES is not set')
+print(URL)
 
 j11=open("../2.json", "r")
 j1=j11.read()
