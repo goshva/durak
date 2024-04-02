@@ -2,9 +2,11 @@ import {css} from 'lit';
 export const vebcss=css`
 :host {
    
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+  display: flex;
+  justify-content: center; 
+   
+    position: relative;
+   
 
 }
 
@@ -55,7 +57,7 @@ export const vebcss=css`
 .super {
     margin: 0;
     height: 100vh;
-    background-image: url(/img/bcg-green.jpg);
+   /*  background-image: url(/img/bcg-green.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -170,13 +172,15 @@ h1, h2, h3, h4, h5, h6, p {
 
 .deck_card {
     position: absolute;
+	width:50px;
 }
 
 .deck_flex {
     position: absolute;
     width: 200px;
     display: flex;
-    position: relative;
+   left: -81px;
+   bottom: -56px;
     justify-content: center;
     align-items: center;
 }
@@ -288,6 +292,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .cards_number-6-hover:hover {
     box-shadow: 0px 0px 10px yellow;
+	 transform: translateY(-20px);
 }
 
 .cards_number-6-hover:nth-of-type(1):hover {
