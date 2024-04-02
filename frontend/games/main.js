@@ -13,7 +13,8 @@ import {Konduktor}from './konduktor.js';
 import {Rout}from './rout.js';
 import {Prerender}from './prerender.js';
 import {Render}from './body_render.js';
-
+//import {Render2}from './test.render.js';
+//import {vebcss4} from '../css/vebcss4.js';
 export const state={};
 
 export class DurakGame extends LitElement{
@@ -27,7 +28,8 @@ export class DurakGame extends LitElement{
 		_myrole:'',            //роль юзера
 		_round:{type:Number}  //счетчик раундов
       };
-      static styles =vebcss; 
+      static styles =vebcss;
+//static styles =vebcss4;	  
    constructor(){
         super()
         
@@ -181,13 +183,15 @@ if (await task===true){
    e.target.classList.remove(`cards_number-${6}-hover`);
    e.target.style.transform = 'none';
    e.target.style.zIndex = -1;
+   //let ypy= e.target.getBoundingClientRect();
+   //console.log(ypy)
    let u=this.players[j][k];
 let lft=e.target.style.left;
 
 this.konduktor.attach(u,lft);  
 
 this.cash[j].push(this.players[j][k]);
-console.log(this.cash[j])
+//console.log(this.cash[j])
  
 this.players[j].splice(k,1,null)
  
@@ -246,6 +250,9 @@ let broken_card=this.konduktor.broken_card();
    e.target.style.transform = 'none';
  let wm3=this.konduktor.get_wm3();  
    e.target.style.left=wm3.get(broken_card);
+    //let ypy= e.target.getBoundingClientRect();
+   //console.log(ypy)
+   
 this.konduktor.deff()  
    
   this.cash[j].push(this.players[j][k]);
