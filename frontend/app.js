@@ -1,6 +1,8 @@
+
 import {BordCount} from"./chat/autch.js"
 import {DurakGame,state} from './games/main.js';
 import {ws_player} from './chat/autch.js';
+import {MotionLit} from './logo/motion-l.js';
 let ws;
 
 var id_prosses;
@@ -10,25 +12,17 @@ let rendersock =async (response) => {
     let r=response;
     const  [players_count, deck, active_suit, attacker, defender, players, suits, ranks, passes,target,usernames] = [r.players_count, r.deck, r.active_suit, r.attacker, r.defender, r.players, r.suits, r.ranks, r.passes,r.target,
 	r.usernames];
-console.log(response)
-    // Рисуем карты игроков
-  // renderPlayerCards(players, players[target],passes,target);
-//let du=new DurakGame(r,ws);
-//let du=new DurakGame();
+
 state.r=r;state.ws=ws;
 ws_player.ws=ws;
 customElements.define('doom-arhitekt',DurakGame);
-//du.renders(null);
 
-//renderDeck(deck);
-    // Рисуем роли
- //renderPlayerRoles(players, attacker, defender,target)
-
-    // Рисуем имена игроков
- //renderPlayersNames();
 
 
 };
+
+let logotyp=document.createElement('motion-lit');self.document.body.appendChild(logotyp);
+
 const start_game2=document.getElementById('start_game2')
 start_game2.addEventListener('click',async function(e){ws===undefined?await connect(2,e):null;})//каждая игра идет на своем path
 
@@ -42,15 +36,16 @@ stop_game.addEventListener('click',async function(e){
   {ws!==undefined?ws.close():null;}return 0})
 
 //игра начнеться когда все игроки ткнут соотв-ю кнопку
-
+let nav=document.querySelector(".nav");	
 
 
 //console.log(start_game)
 async function connect(path,e) {
- let prBar=document.querySelector(".progress-bar")
+
+ let prBar=document.querySelector(".btn")
   e.target.style.backgroundColor='green';
   e.target.textContent='player wait';
-  prBar.classList.add('itarget')
+  e.target.classList.add('itarget')
 
 ws = new WebSocket(`ws://localhost:8765/${path}`);
 
@@ -77,20 +72,18 @@ sent()
 
 
   ws.onmessage= async function message (e) {
-    //console.log('Message:', e.data);
+   
  let response = JSON.parse(e.data);
- //console.log(response)
- //console.log(response.deck_id)
-    if((response.id&&!id_prosses)){id_prosses=response.id;console.log(id_prosses);
-      //sent(path)
 
+    if((response.id&&!id_prosses)){id_prosses=response.id;console.log(id_prosses);
+    
     }
     
     if((response?.deck_id)&&id_prosses){
-     //console.log(response.deck_id)
+   
     await rendersock(response);}
     if(response.connect){let n=Number(response.connect);let buttons=[start_game2,start_game3,start_game4]
-    buttons.forEach((i,index)=>{if(index===(n-2)){i.textContent=`PLAYERS${n}`;i.style.color='#3bff67';prBar.classList.remove('itarget')}i.setAttribute('disabled',true)})
+    buttons.forEach((i,index)=>{if(index===(n-2)){i.textContent=`PLAYERS${n}`;i.style.color='#3bff67';i.classList.remove('itarget')}i.setAttribute('disabled',true)});nav.setAttribute("hidden",true);nav.style.display='none';logotyp.remove();
     }
     
   };
@@ -119,7 +112,7 @@ sent()
 
 
 
-//await connect(2)
+
 
 
 
