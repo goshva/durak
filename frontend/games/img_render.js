@@ -64,7 +64,7 @@ if(xx){
     return html`<img class="card_img cards_number-6 " 
 	
 	style="transform:translateY(-250px);
-	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};"
+	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};width: 57px;"
 	src =${img}
 	${animate(logoOptions())} >` }})
 	
@@ -87,7 +87,7 @@ if(yy&&(this._myrole==='defender')){
     return html`<img class="card_img cards_number-6 " 
 	
 	style="transform:translateY(-250px);
-	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};"
+	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};width: 57px;"
 	src =${img} 
 	${animate(logoOptions())}>` }})
 	
@@ -114,7 +114,7 @@ if(xx_passive&&yy){
     return html`<img class="card_img cards_number-6 " 
 	
 	style="transform:translateY(-250px);
-	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};"
+	left:${!ww?A[(i===x.length-1)?ps:(ps===1)?ps:i]:ww};width: 57px;"
 	src =${img}
 	${animate(logoOptions())} >` }})
 	
