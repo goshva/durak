@@ -18,7 +18,7 @@ this.konduktor.clearAll();
 let new_count=aa.includes(false);if(new_count){this.new_count=true};
 console.log(new_count)
  
-  this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>{i.style.top='0px';i.removeAttribute("style")});      
+  this.shadowRoot.querySelectorAll('.cards_number-6').forEach((i)=>{i.style.top='0px';i.removeAttribute("style");i.classList.add(`cards_number-${6}-hover`);});      
         
         
       //this._round +=1 ;
