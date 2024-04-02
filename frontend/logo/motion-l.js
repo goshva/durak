@@ -9,7 +9,7 @@ export class MotionLit extends LitElement {
   };
   static styles = styles;
 
-  lit = g0;
+  logo = g0;
   
 
   duration = 5000;
@@ -25,7 +25,7 @@ export class MotionLit extends LitElement {
   constructor() {
     super();
     this.addEventListener('click', () => this.clickHandler());
-    this.letters = this.lit;
+    this.letters = this.logo;
 	this.count=0;
   }
 
@@ -35,8 +35,8 @@ window.requestAnimationFrame(animate);
 	  console.log(this.count);
 	  this.count +=1;
 this.count===9?this.count=0:null;	  
-this.count===3?this.lit=g00:null;
-this.count===6?this.lit=g0:null;	  
+this.count===3?this.logo=g00:null;
+this.count===6?this.logo=g0:null;	  
     const delayTime = this.duration / (this.letters.length * 2.5);
     return html`
       ${this.letters?.map(
@@ -66,7 +66,7 @@ this.count===6?this.lit=g0:null;
   changeLayout() {
 	  //console.log(this.count);
 	 // this.count +=1;
-    this.letters =this.letters.length?[]:this.lit ;
+    this.letters =this.letters.length?[]:this.logo ;
   }
 }
 customElements.define('motion-lit', MotionLit);
