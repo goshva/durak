@@ -31,5 +31,4 @@ export const passesMapping = {
         image.style.left = '351px';
     },
 };
-//const A=["left:-9px","left:56px","left:121px","left:186px","left:251px"];
-export const A=["-56px","-9px","56px","121px","186px","251px"];
+export const A=["-56px","-9px","56px","121px","186px","251px",'281px','301px','351px'];
