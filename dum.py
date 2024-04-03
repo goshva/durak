@@ -24,14 +24,15 @@ class Dum(Document):
         deck_back:list
         passes:int
 
-async def init_mongo():
-    client = AsyncIOMotorClient("mongodb://localhost:27017")
-    return client 
+client = AsyncIOMotorClient("mongodb://localhost:27017")
+#async def init_mongo():
+    #client = AsyncIOMotorClient("mongodb://localhost:27017")
+    #return client 
 
 
 async def example(du):
 
-    client =await init_mongo()
+    #client =await init_mongo()
 
     await init_beanie(database=client.durak, document_models=[Dum])
    
@@ -41,12 +42,12 @@ async def example(du):
 #удалить клиента
 async def example_dell(name):
    
-    client =await init_mongo()
+    #client =await init_mongo()
     await init_beanie(database=client.durak, document_models=[Dum])
     await Dum.find_one(Dum.name == name).delete()
 #внести изменения
 async def example_get(e,rout):
-    client =await init_mongo()
+    #client =await init_mongo()
     await init_beanie(database=client.durak, document_models=[Dum])
     t=str(e.get("name"))
     game=await Dum.find_one(Dum.name == t)
@@ -68,7 +69,7 @@ async def example_get(e,rout):
         u=e.get("players")
         role=e.get("role")
         if role=="defender" and rout==2:
-            print(role)
+            #print(role)
             n =game.cach[int(t)]
             nn =game.cach[int(u)]
             for i in n:
@@ -91,7 +92,7 @@ async def example_get(e,rout):
             #print(json.dumps(response))
             return json.dumps(response)
         if role=="defender" and rout>2:
-            print(rout)
+            #print(rout)
             ui=int(u)
             for ie in range(rout):
                 print(ie)
@@ -122,14 +123,7 @@ async def example_get(e,rout):
                 await task11
                 nn = len(game.players[ie])
                 nn6=6-nn
-                if nn6>=0 and (len(game.deck)>=nn6):
-                    print('one')
-                    task = asyncio.create_task(popdek(game.deck,game.players[ie],nn6))
-                    await task
-                if nn6>len(game.deck):
-                    print('two')
-                    task = asyncio.create_task(popdek(game.deck,game.players[ie],len(game.deck)))
-                    await task
+                await pop_dek(nn6,game,ie)
                 if len(game.cach[ie])>0:
                     print('three')    
                     task1 = asyncio.create_task( back_dek(game.cach,ie,game.deck_back))
@@ -147,11 +141,16 @@ async def sortdek(gm):
                  gm.remove(i)
 
 async def popdek(gmd,gm,nn6):
-   for ii in range(nn6):
-        if gmd[ii]:
-            y=gmd.pop(-1)
-            if y !=None:
-               gm.append(y)  
+    for ii in range(nn6):
+       # if gmd[ii]:
+        y=gmd.pop(-1)
+        if y !=None:
+               print("pop") 
+               gm.append(y)
+        else:
+           continue
+    return 0       
+                
 
 async def back_dek(game_cach,num,game_deck_back):
     
@@ -166,3 +165,22 @@ async def gather_sort(a,b):
         sortdek(b)
        )
 
+async def pop_dek(nn6,game,ie):
+    #print((f'len(game.deck){len(game.deck)}'))
+    #print((f'nn6{nn6}'))
+    if nn6<=0:
+        print('null')
+        return 0  
+    if nn6>0 and (len(game.deck)>=nn6):
+        print('one')
+        task = asyncio.create_task(popdek(game.deck,game.players[ie],nn6))
+        return await task
+                
+    elif nn6>len(game.deck) and len(game.deck) !=0:
+        print('two')
+        task = asyncio.create_task(popdek(game.deck,game.players[ie],len(game.deck)))
+        return await task
+   
+    else:
+        print("default")
+        return 0
