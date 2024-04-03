@@ -202,7 +202,11 @@ this.players[j].splice(k,1,null)
 
 }
 
-taks(){//console.log(`taks()`)
+taks(){let a_cards=this.konduktor.get_aktive().length===0;
+let passes=this.passes!==0;
+let bool=(this._myrole==='attacker' || this._myrole==='attacker2' )?a_cards&&passes:!a_cards&&passes;
+console.log(bool);
+if(bool){
 if(this.players_count===2){
 
 let a=(this._myrole==='attacker')?this.target:this._pos1;
@@ -213,7 +217,8 @@ let a=(this._myrole==='attacker' || this._myrole==='attacker2' )?this.target:1;/
 
 this.w_m={type:"set","taks":`${a}`,"players":this.target,"id":this.id,"name":this.name,"deck_id":this.deck_id,"role":this._myrole,"roles":this._role};}
 
-}
+}return 0;
+ };
 
 
 
