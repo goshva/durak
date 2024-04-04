@@ -18,15 +18,18 @@ import {Render}from './body_render.js';
 export const state={};
 
 export class DurakGame extends LitElement{
+	    _pos0=null;//позиция юзера игры this.players[this._pos0]
+		_pos1=null;//позиция соответсвует this.players[this._pos1] и.тд
+		_pos2=null;
+		_pos3=null;
+		_myrole='';            //роль юзера
+		_round=null;  //счетчик раундов
+	    _role=[]; 
+	
     static properties = {   //Реактивные свойства 
-        _pos0:{type:Number},//позиция юзера игры this.players[this._pos0]
-		_pos1:{type:Number},//позиция соответсвует this.players[this._pos1] и.тд
-		_pos2:{type:Number},
-		_pos3:{type:Number},
+      
 		_echo:{},//сообщения сервера
-		_role:{type:Array},//роли игроков,если this._pos0,соответсвует this._role[0],(this._pos1 -> this._role[1]).  
-		_myrole:'',            //роль юзера
-		_round:{type:Number}  //счетчик раундов
+		
       };
       static styles =vebcss;
 //static styles =vebcss4;	  
