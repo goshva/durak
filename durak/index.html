@@ -1,0 +1,70 @@
+<!doctype html><html><meta charset="utf-8"/><head><title>WebSocket Test</title><meta name="viewport" content="width=device-width"><script defer="defer" src="app.js"></script></head><body><div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 25%"></div></div><div class="nav"><button id="start_game2" type="button" class="btn">PLAY2</button> <button id="start_game3" type="button" class="btn">PLAY3</button> <button id="start_game4" type="button" class="btn">PLAY4</button> <button id="stop_game" type="button" class="btn">STOP</button></div><doom-arhitekt></doom-arhitekt><pink-floid></pink-floid><style>.nav {
+  list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
+    top: 40%;
+    position: relative;
+}
+
+
+    .itarget{
+ 
+      animation-duration: 15s;
+      animation-name: slidein;
+      animation-iteration-count: 4;
+    }
+    
+    @keyframes slidein {
+      from {
+        
+       background-color: #E91E63; 
+      }
+    
+      to {
+        
+      background-color: #3F51B5;
+      }
+    }
+	html {
+   
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    height: 107vh;
+    background-image: url(./img/bcg-green.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+  motion-todos {
+      width: 600px;
+    }
+
+    @media screen and (max-width: 600px) {
+      motion-todos {
+        width: 100%;
+      }}
+ .btn{
+	font-size: medium;
+	
+	border-block-color: blue;
+    border-width: 5px;
+    background-color: #008007f7;
+    height: 50px;
+    min-width: 70px;
+    color: white;
+}
+
+ .btn:hover {
+font-size: medium;
+	
+	border-block-color: red;
+    border-width: 11px;
+    background-color:#000780f7 ;
+    color: white;	
+  
+  
+}</style></body></html>
