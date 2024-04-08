@@ -273,6 +273,51 @@ h1, h2, h3, h4, h5, h6, p {
     position: absolute;
 }
 
+.button-rules {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button-rules:hover {
+  background: none;
+  color: white;
+}
+
+.modal-inactive {
+  z-index: -2;
+  opacity: 0;
+}
+
+.modal-active {
+  z-index: 2;
+  opacity: 1;
+  position: fixed;
+  max-width: 500px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  top: 70px;
+  left: 10px;
+  transition: 0.2s;
+  font-size: 16px;
+}
+
+@media (max-width: 576px) {
+  .modal-active {
+    font-size: 14px;
+  }
+}
+@media (max-width: 360px) {
+  .modal-active {
+    font-size: 12px;
+  }
+}
+
 @media (min-width: 576px) {
     .players_number_button {
         min-width: 150px;
