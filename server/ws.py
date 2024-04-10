@@ -5,42 +5,28 @@ import ssl
 import asyncio
 import websockets
 import json
+import ssl
 from dotenv import load_dotenv
 import os
 load_dotenv()
 PORT = os.getenv('PORT')
 URL = os.getenv('URL')
-print(URL)
-
-j11=open("../2.json", "r")
-j1=j11.read()
-j11.close()
-
-j22=open("../3.json", "r")
-j2=j22.read()
-j22.close()
-
+#ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+#ssl_certificate    = "/home/goshva/.acme.sh/*.vit.ooo_ecc/*.vit.ooo.cer"
+#ssl_certificate_key ="/home/goshva/.acme.sh/*.vit.ooo_ecc/*.vit.ooo.key"
+#ssl_context.load_cert_chain(ssl_certificate, keyfile=ssl_certificate_key)
 clients = set()
-
 
 async def socket(message):
     for client in clients:
             await client.send(message)
 
 async def broadcast(message):
-    i=len(clients)
-    print(i)
-    if i==2:
-       await socket(json.dumps(j1))
-    if i==3:
-       await socket(json.dumps(j2))
-    else:
-        if i!=0:        
-             game = du.DurakGame(i)
-             game_state = game.play_game()
-             massmessage = json.dumps(game_state.__dict__, ensure_ascii=False)
-             await socket(massmessage)
- 
+  if len(clients)>1:
+        game = du.DurakGame(len(clients))
+        game_state = game.play_game()
+        massmessage = json.dumps(game_state.__dict__, ensure_ascii=False)
+        await asyncio.wait([client.send(massmessage) for client in clients])
 
 async def handle_client(websocket, path):
     clients.add(websocket)
@@ -51,7 +37,8 @@ async def handle_client(websocket, path):
         clients.remove(websocket)
 
 async def start_server():
-    async with websockets.serve(handle_client, URL, PORT): #, ssl=ssl_context):
+ #   async with websockets.serve(handle_client, URL, PORT, ssl=ssl_context):
+    async with websockets.serve(handle_client, URL, PORT):
         await asyncio.Future()  # Run forever
 
 asyncio.run(start_server())
