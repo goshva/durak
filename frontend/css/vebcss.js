@@ -188,9 +188,21 @@ h1, h2, h3, h4, h5, h6, p {
 .table_grid {
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(5, 65px);
+    grid-template-columns: repeat(4, 65px);
     justify-items: center;
+	position: relative;
+    margin:0 auto;
+	
 }
+.table_grid span {
+   
+	background-color:#0098ff94;
+	height:89px;
+	width:57px;
+	margin:5px;
+	opacity: 0.2;
+}
+
 
 .left {
     float: left;
