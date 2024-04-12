@@ -13,6 +13,8 @@ import {Konduktor}from './konduktor.js';
 import {Rout}from './rout.js';
 import {Prerender}from './prerender.js';
 import {Render}from './body_render.js';
+import {positing as po}from './positing.js';
+
 //import {Render2}from './test.render.js';
 //import {vebcss4} from '../css/vebcss4.js';
 export const state={};
@@ -55,14 +57,14 @@ export class DurakGame extends LitElement{
         this.imgclick=this.imgclick.bind(this);
         this.echo=this.echo.bind(this);
         this.taks=this.taks.bind(this);
-        this.rout=this.rout.bind(this);
+        this.Rout=this.Rout.bind(this);
         this.defclick=this.defclick.bind(this);
         this.cash=[[],[],[],[]];//карты в игре
         this.ws.onmessage=this.echo; //обработчик сообщений сервера 
 	    this._role=[];
         this._myrole='null';
 		this._round=0;
-		
+		this._a=[];
 	   this.connect();
 	  
 	          
@@ -92,12 +94,13 @@ this._role[3]=(n>=4)?this.static_role[pos3]:null;
 this._role=this._role.filter((w) => w!==null);
 this._myrole=this._role[0];
 if(this.players_count===2 && e){this._role.reverse()}
-console.log(this.usernames)
+//console.log(this.usernames)
 let data=JSON.stringify({"install":true,users:this.deck_id,user:this.id,usernames:this.usernames})
 window.postMessage(data );
 
 this.b_ack= html`<img src=./img/${suitsMapping2[this?.deck[0][0]]}${this?.deck[0][1]}.png alt="Card back" class="card_img" style="opacity: 0.5;" />`
-
+//console.log(this._role)
+//console.log(this._role[0],this._role[1],this._role[2],this._role[3])	
 	 }
 
 
@@ -109,7 +112,7 @@ if(this._myrole==="defender"){return await this.matrix_defender(j,k)}//если 
 }
 //событие сокета 'взял карты или покрыл '
 //на 3    надо сделать на 4 игроков?
-rout(e){
+Rout(e){
  Rout.call(this,e);  
    
     }
@@ -120,7 +123,7 @@ async matrix_attacker(j,k){
 let a_cards=this.konduktor.get_aktive();
 let b_cards=this.konduktor.get_back().map((i)=>{return[i.one,i.two]}).flat();
 let a_b=a_cards.concat(b_cards);
-console.log(a_b)	
+//console.log(a_b)	
 let my_card=this.players[j][k];	
 let result=a_b.map((i,index)=>{let e1=(my_card[1]===i[1]);if(e1){return true}})
 let p_i=this.passes===0;	
@@ -150,21 +153,24 @@ let result=a_cards.map((i,index)=>{
     a_cards.splice(v,1);
     
     
-	this.konduktor.set_back(i,my_card)
+	this.konduktor.set_back(i,my_card,this.passes-1)
  
     return 'back'}})
-console.log(result);
+//console.log(result);
 
 if ((result.includes('back'))){return true;}//если все Ок промис труе отправляем сокет с данными
 else {return false};
 }//если нет карта не двигаетья 
 
-
+/* firstUpdated() { //lit method firstUpdated()
+ this.initus();	
+} */
 
 
 //событие карта на столе
 //обработчик клика attacker attacker2 images_render.js
 async imgclick(e){
+
 let pss=this.passes;	
 let xx=(this._myrole==='attacker2' && !this.new_count)	
 if( e.target .style.top ==='-256px')return
@@ -181,17 +187,20 @@ let k=Number(d.pos)
 let task=this.task(j,k)
 if (await task===true){
 	this.passes+=1;
-   this.passes?passesMapping[this.passes](e.target):'';
-   e.target .style.top = '-256px';
+   //this.passes?passesMapping[this.passes](e.target):'';
+   e.target .style.left= po[this.passes-1].left;
+   e.target .style.top = po[this.passes-1].top;
    e.target.classList.remove(`cards_number-${6}-hover`);
    e.target.style.transform = 'none';
    e.target.style.zIndex = -1;
    //let ypy= e.target.getBoundingClientRect();
    //console.log(ypy)
    let u=this.players[j][k];
-let lft=e.target.style.left;
+//let lft=e.target.style.left;
+let lft=po[this.passes-1].left;
 
-this.konduktor.attach(u,lft);  
+this.konduktor.attach(u,lft);
+this._a.push(u);  
 
 this.cash[j].push(this.players[j][k]);
 //console.log(this.cash[j])
@@ -233,9 +242,9 @@ set w_m(send){
 //обработчик сообщения сервера
 async echo(e){ let message=JSON.parse(e.data) ;
 (message.type==="set"&&!message.taks&&(message.id!==this.id))?this._echo=message:null;//все сообщения кроме взял карты
-((message.type==="set")&&(Number(message.taks)===1))?this.rout(message):null;//событие взял или покрыл
-((message.type==="set")&&(Number(message.taks)===0))?this.rout(message):null;
-(message.type==="round-taks")?this.rout(message):null;
+((message.type==="set")&&(Number(message.taks)===1))?this.Rout(message):null;//событие взял или покрыл
+((message.type==="set")&&(Number(message.taks)===0))?this.Rout(message):null;
+(message.type==="round-taks")?this.Rout(message):null;
 }
 
 //обработчик клика defender images_render.js
@@ -256,10 +265,13 @@ let broken_card=this.konduktor.broken_card();
    e.target .style.top = '-256px';
    e.target.classList.remove(`cards_number-${6}-hover`);
    e.target.style.transform = 'none';
- let wm3=this.konduktor.get_wm3();  
-   e.target.style.left=wm3.get(broken_card);
-    //let ypy= e.target.getBoundingClientRect();
-   //console.log(ypy)
+ let wm3=this.konduktor.get_wm3(); 
+let wm4=this.konduktor.get_wm4();
+let pos_number=(this._pos2===Number(this._echo.players))||(this._pos3===Number(this._echo.players)); 
+   e.target.style.left=(pos_number&&wm4.has(broken_card))?wm4.get(broken_card):wm3.get(broken_card);
+   
+   //console.log(`wm4.get(broken_card:${wm4.get(broken_card)}`)
+   //console.log(this._pos2===Number(this._echo.players))
    
 this.konduktor.deff()  
    
@@ -288,9 +300,9 @@ return s;
 
 
 
-left(left,sp,span_u2){return render_left.call(this,left,sp,span_u2)};//render left deck
+Left(left,sp,span_u2){return render_left.call(this,left,sp,span_u2)};//render left deck
 
-right(right,sp,span_u3){return render_right.call(this,right,sp,span_u3)};//render right deck
+Right(right,sp,span_u3){return render_right.call(this,right,sp,span_u3)};//render right deck
 
 renderDeck(){return render_deck.call(this,null)};//render deck deck
 
@@ -302,24 +314,41 @@ get foo(){return this.my_img;}
 
 
 
- Img(i){
-return images_render.call(this,i);	 
+ Img(i,p){
+return images_render.call(this,i,p);	 
 	 
 }
 
- echorender(e,i){ 
-	return img_render.call(this,e,i);
+ echorender(e,i,p){ 
+	return img_render.call(this,e,i,p);
 	
 };
 
 
-prerender(){return Prerender.call(this,A) } //настраиваем данные перед рендером
+prerender(){return Prerender.call(this,po) } //настраиваем данные перед рендером
 
 // рендер for Render
  render(round){
 	 const body=Render.call(this,html,styleMap);
 	return html`${body}`;
 };
+
+
+
+/* initus(){ this.shadowRoot?.querySelectorAll('.g_g').forEach((i,index)=>{let domrect= i.getBoundingClientRect();
+ [this.items[index].bottom,this.items[index].left,this.items[index].right,this.items[index].top]=
+ [domrect.bottom+'px',domrect.left+'px',domrect.right+'px',domrect.top+'px']  }) ;console.log(this.items) }
+items = [
+      {id: 0, name: 'J',bottom:0,left:0,right:0,top:0},
+      {id: 1, name: 'S',bottom:0,left:0,right:0,top:0},
+      {id: 2, name: 'K',bottom:0,left:0,right:0,top:0},
+      {id: 3, name: 'R',bottom:0,left:0,right:0,top:0},
+      {id: 4, name: 'L',bottom:0,left:0,right:0,top:0},
+      {id: 5, name: 'P',bottom:0,left:0,right:0,top:0},
+	  {id: 6, name: 'y',bottom:0,left:0,right:0,top:0},
+	  {id: 7, name: 'x',bottom:0,left:0,right:0,top:0},
+    ];
+	*/
 
 };
 
