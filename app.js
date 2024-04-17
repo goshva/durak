@@ -57,7 +57,7 @@ const app = () => {
 };
 
 function connect() {
-  var ws = new WebSocket('ws://localhost:8765');
+  var ws = new WebSocket('wss://durak.vit.ooo/ws/');
   ws.onopen = function() {
     // subscribe to some channels
     ws.send(JSON.stringify({

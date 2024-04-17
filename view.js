@@ -52,6 +52,7 @@ const dealingCards = (players_count, players, attacker, defender, deck) => {
 
 
 const renderCard = (card, container, cardsNumber, passes, index, players) => {
+   
     const [symbol, rank] = card;
     const suit = suitsMapping[symbol];
     const image = document.createElement('img');
@@ -65,7 +66,7 @@ const renderCard = (card, container, cardsNumber, passes, index, players) => {
     // что pass это те карты которые сейчас в игре???
     
 
-    image.addEventListener('click', () => handleCard(image, passes, index), {once: true});
+   image.addEventListener('click', () => handleCard(image, passes, index), {once: true});
     div.appendChild(image);
     container.appendChild(div);
 };
@@ -110,8 +111,10 @@ const renderPlayerRoles = (players, attacker, defender) => {
 
 const renderPlayersNames = (players_count) => {
     for (let i = 0; i < players_count; i += 1) {
+ 
         const playerNameTextEl = document.querySelector(`.player${i}-name`);
         playerNameTextEl.textContent = `player${i}`;
+
     }
 };
 
@@ -145,6 +148,7 @@ const renderDeck = (deck) => {
 const renderPlayerCards = (players, currentPlayer, passes) => {
     let i = 0;
     players.forEach((player) => {
+       
         const playerCardsDiv = document.querySelector(`.player${i}CardsContainer`);
         player === currentPlayer ? renderCards(players, player, playerCardsDiv, true, passes, i) :
         renderCards(players, player, playerCardsDiv, false, passes, i);
@@ -190,3 +194,12 @@ export default (state) => (path, value) => {
         }
     }
 }
+
+
+
+
+  
+   
+    
+   
+
