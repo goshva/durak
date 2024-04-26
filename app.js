@@ -8,7 +8,7 @@ const appHeight = () => {
 window.addEventListener('resize', appHeight)
 appHeight();
 
-const app = () => {
+const app = (object) => {
     const state = {
         init: false,
         active_suit: '',
@@ -24,7 +24,6 @@ const app = () => {
     };
 
     const watchedState = onChange(state, render(state));
-
     const playersNumberButtons = document.querySelectorAll('.players_number_button');
     const dialogue = document.querySelector('.players_number_dialogue');
     playersNumberButtons.forEach((button) => {
@@ -34,7 +33,7 @@ const app = () => {
                 .then(response => 
                 response.json()
                 .then(data => {
-                    const { active_suit, attacker, deck, defender, passes, players, players_count } = data;
+                    const { active_suit, attacker, deck, defender, passes, players, players_count } = object;
                     watchedState.active_suit = active_suit;
                     watchedState.attacker = attacker;
                     watchedState.deck = deck;
@@ -57,7 +56,7 @@ const app = () => {
 };
 
 function connect() {
-  var ws = new WebSocket('ws://localhost:8765');
+  var ws = new WebSocket('ws://localhost:8767');
   ws.onopen = function() {
     // subscribe to some channels
     ws.send(JSON.stringify({
@@ -66,8 +65,8 @@ function connect() {
   };
 
   ws.onmessage = function(e) {
-    console.log('Message:', e.data);
-    response = JSON.parse(e.data);
+    console.log('Message: ', e.data);
+    const response = JSON.parse(e.data);
     app(response);
 
   };
@@ -86,4 +85,3 @@ function connect() {
 }
 
 connect();
-app();
